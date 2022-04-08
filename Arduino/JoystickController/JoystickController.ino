@@ -26,4 +26,11 @@ void loop(){
     SW_state = digitalRead(SW);
     mapX = map(xPos, 0, 1023, -512, 512);
     mapY = map(yPos, 0, 1023, -512, 512);
+
+    Serial.print("X: ");
+    Serial.print(mapX);
+    Serial.print(" | Y: ");
+    Serial.print(mapY);
+    Serial.print(" | Button: ");
+    Serial.println(SW_state);
 }
