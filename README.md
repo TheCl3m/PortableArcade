@@ -1,8 +1,9 @@
-## This is the official page of the Portable Arcade project for the course CS-358 @EPFL
+### This is the official page of the Portable Arcade project for the course CS-358 @EPFL
 
 This project is open source, your are allowed to use all material presented in a non-commercial manner.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+
 
 ### Markdown
 
