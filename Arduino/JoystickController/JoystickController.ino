@@ -6,9 +6,9 @@
 */
 
 
-#define vrX 0
-#define vrY 0
-#define SW 0
+#define vrX A0
+#define vrY A1
+#define SW 2
 
 #define BTN_0 0
 #define BTN_1 0
@@ -16,14 +16,20 @@
 #define BTN_3 0
 
 
+int xPos = 0;
+int yPos = 0;
+int SW_state = 0;
+int mapX = 0;
+int mapY = 0;
+
 
 void setup(){
     //prepare usb communication
     Serial.begin(9600); 
 
     //prepare the joystick
-    pinMode(VRx, INPUT);
-    pinMode(VRy, INPUT);
+    pinMode(vrX, INPUT);
+    pinMode(vrY, INPUT);
     pinMode(SW, INPUT_PULLUP); 
 
     //enable pinmode for buttons as INPUT
