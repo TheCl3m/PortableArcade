@@ -1,6 +1,6 @@
-## Welcome to GitHub Pages
+## This is the official page of the Portable Arcade project for the course CS-358 @EPFL
 
-You can use the [editor on GitHub](https://github.com/TheCl3m/PortableArcade/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+This project is open source, your are allowed to use all material presented in a non-commercial manner.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
