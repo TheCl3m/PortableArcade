@@ -1,5 +1,7 @@
 import serial
+import vgamepad as gp
 
+gamepad = gp.VX360Gamepad()
 
 def decode_command(string):
     command = string.split("-")
