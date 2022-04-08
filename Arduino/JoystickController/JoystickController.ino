@@ -10,13 +10,27 @@
 #define vrY 0
 #define SW 0
 
+#define BTN_0 0
+#define BTN_1 0
+#define BTN_2 0
+#define BTN_3 0
+
 
 
 void setup(){
+    //prepare usb communication
     Serial.begin(9600); 
+
+    //prepare the joystick
     pinMode(VRx, INPUT);
     pinMode(VRy, INPUT);
     pinMode(SW, INPUT_PULLUP); 
+
+    //enable pinmode for buttons as INPUT
+    pinMode(BTN_0, INPUT);
+    pinMode(BTN_1, INPUT);
+    pinMode(BTN_2, INPUT);
+    pinMode(BTN_3, INPUT);
 }
 
 
@@ -31,6 +45,18 @@ void loop(){
     Serial.print(mapX);
     Serial.print(" | Y: ");
     Serial.print(mapY);
-    Serial.print(" | Button: ");
+    Serial.print(" | L3: ");
     Serial.println(SW_state);
+    if (BTN_0 == HIGH){
+        Serial.println('Button 0 pressed');
+    }
+    if (BTN_1 == HIGH){
+        Serial.println('Button 1 pressed');
+    }
+    if (BTN_2 == HIGH){
+        Serial.println('Button 2 pressed');
+    }
+    if (BTN_3 == HIGH){
+        Serial.println('Button 3 pressed');
+    }
 }
