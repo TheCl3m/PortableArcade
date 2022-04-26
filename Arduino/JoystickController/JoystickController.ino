@@ -10,10 +10,10 @@
 #define vrY A1
 #define SW 2
 
-#define BTN_0 0
-#define BTN_1 0
-#define BTN_2 0
-#define BTN_3 0
+#define BTN_0 2
+#define BTN_1 3
+#define BTN_2 4
+#define BTN_3 5
 
 
 int xPos = 0;
@@ -47,22 +47,34 @@ void loop(){
     mapX = map(xPos, 0, 1023, -512, 512);
     mapY = map(yPos, 0, 1023, -512, 512);
 
-    Serial.print("X: ");
+    Serial.print("JST-");
     Serial.print(mapX);
-    Serial.print(" | Y: ");
-    Serial.print(mapY);
-    Serial.print(" | L3: ");
-    Serial.println(SW_state);
+    //Serial.print(" | Y: ");
+    Serial.print(";");
+    Serial.println(mapY);
+    //Serial.print(" | L3: ");
+    //Serial.println(SW_state);
     if (BTN_0 == HIGH){
-        Serial.println('Button 0 pressed');
+        Serial.println("BTN-A:ON");
+    } else {
+        Serial.println("BTN-A:OFF");
     }
+    
     if (BTN_1 == HIGH){
-        Serial.println('Button 1 pressed');
+        Serial.println("BTN-B:ON");
+    } else {
+        Serial.println("BTN-B:OFF");
     }
+    
     if (BTN_2 == HIGH){
-        Serial.println('Button 2 pressed');
+        Serial.println("BTN-C:ON");
+    } else {
+        Serial.println("BTN-C:OFF");
     }
+    
     if (BTN_3 == HIGH){
-        Serial.println('Button 3 pressed');
+        Serial.println("BTN-D:ON");
+    } else {
+        Serial.println("BTN-D:OFF");
     }
 }

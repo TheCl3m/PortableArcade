@@ -1,7 +1,17 @@
 import serial
-import vgamepad as gp
+from evdev import UInput, AbsInfo, ecodes as e
 
-gamepad = gp.VX360Gamepad()
+cap = {  e.EV_KEY : [e.KEY_0, e.KEY_1, e.KEY_2, e.KEY_3],
+ e.EV_ABS : [ (e.ABS_X, AbsInfo(value=0, min=-512, max=512, 
+fuzz=0, flat=0, resolution=0)),
+(e.ABS_Y, AbsInfo(0, -512, 512, 0, 0, 0)),
+ (e.ABS_MT_POSITION_X, (0, 128, 255, 0)) ]}
+
+
+def create_controller():
+
+    return UInput(cap, "VirtualController", version=0x1);
+
 
 def decode_command(string):
     command = string.split("-")
@@ -20,6 +30,8 @@ def decode_command(string):
 if __name__ == '__main__':
     ser = serial.Serial('/dev/ttyACM0', 9600, 1)
     ser.flush()
+
+    controller = create_controller()
 
     while True:
         if ser.in_waiting > 0:

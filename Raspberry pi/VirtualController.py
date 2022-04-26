@@ -13,4 +13,3 @@ ui.write(e.EV_ABS, e.ABS_X, 20)
 ui.write(e.EV_ABS, e.ABS_Y, 20)
 ui.write(e.EV_KEY, e.KEY_0, 1) #button 0 down
 ui.syn()
-
