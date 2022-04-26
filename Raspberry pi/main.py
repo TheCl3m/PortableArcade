@@ -52,21 +52,19 @@ def decode_command(string, cntrl):
 
 
 def setup():
-    #Tableau d'instances qui communiquent avec les arduino (1 par arduino dans @devices)
-    serials = [serial.Serial(port=name, baudrate=9600, timeout=1) for name in devices]
-    index = -1
 
-    while index == -1:
-        for i, ser in enumerate(serials):
-            ser.write("CHECK")
+    while True:
+        for name in devices:
+            try:
+                srl = serial.Serial(port=name, baudrate=9600, timeout=1)
+                srl.write("CHECK")
 
-            #Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
-            if ser.readline().decode('utf-8').rstrip() is None:
-                index = i
-                ser.write("LINKED")
-                break
-
-    return serials[index]
+                # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
+                if srl.readline().decode('utf-8').rstrip() is None:
+                    ser.write("LINKED")
+                    return srl
+            except:
+                continue
 
 
 if __name__ == '__main__':
