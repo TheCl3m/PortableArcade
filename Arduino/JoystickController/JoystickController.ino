@@ -50,26 +50,25 @@ void loop(){
    mapX = map(xPos, 0, 1023, -512, 512);
    mapY = map(yPos, 0, 1023, -512, 512);
 
-/*
+
    Serial.print("JST-");
    Serial.print(mapX);
-   Serial.print(" | Y: ");
    Serial.print(";");
    Serial.println(mapY);
-   Serial.print(" | L3: ");
-   Serial.println(SW_state);
-   */
+   //Serial.print("L3:");
+   //Serial.println(SW_state);
+   
    //BUTTONS ARE ACTIVE HIGH
    if (digitalRead(BTN_0) == HIGH){
-        Serial.println(0);
+        Serial.println("BTN-A:ON");
     }
     if (digitalRead(BTN_1) == HIGH){
-        Serial.println(1);
+        Serial.println("BTN-B:ON");
     }
     if (digitalRead(BTN_2) == HIGH){
-        Serial.println(2);
+        Serial.println("BTN-C:ON");
     }
     if (digitalRead(BTN_3) == HIGH){
-        Serial.println(4);
+        Serial.println("BTN-D:ON");
     }
 }

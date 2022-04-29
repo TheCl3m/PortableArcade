@@ -39,6 +39,15 @@ def decode_command(string, cntrl):
         else:
             cntrl.write(e.EV_KEY, e.KEY_3, 0)
 
+        
+        #if cmd[1] == "L3:ON":
+         #   cntrl.write(e.EV_KEY, e.KEY_4, 1)
+        #else:
+         #   cntrl.write(e.EV_KEY, e.KEY_4, 0)
+        
+
+            
+
     elif cmd[0] == "JST":
         coord = cmd[1].split(";")
         cntrl.write(e.EV_ABS, e.ABS_X, coord[0])
