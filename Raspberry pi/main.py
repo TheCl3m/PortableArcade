@@ -65,9 +65,10 @@ def setup():
 
 if __name__ == '__main__':
     ser = setup()
+    print("Found serial " + ser)
     ser.flush()
     controller = create_controller()
-
+    print("controller created")
     while True:
         if ser.in_waiting > 0:
             command = ser.readline().decode('utf-8').rstrip()

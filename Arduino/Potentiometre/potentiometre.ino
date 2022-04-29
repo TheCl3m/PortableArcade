@@ -23,13 +23,10 @@ void loop(void) {
   sensorVal = analogRead(sensorPin);
   res = sensorRawToPhys(sensorVal);
   if (res > 0 && res < 4000) {
-    where = GAUCHE;
     Serial.println("DROITE");
   } else if (res >= 4000 && res < 6000) {
-    where = GAUCHE;
     Serial.println("Milieu");
   } else if (res >= 6000 && res <= 10000) {
-    where = GAUCHE;
     Serial.println("GAUCHE");
   }
   /*Serial.print(F("Raw value from sensor= "));
