@@ -33,48 +33,43 @@ void setup(){
     pinMode(SW, INPUT_PULLUP); 
 
     //enable pinmode for buttons as INPUT
-    pinMode(BTN_0, INPUT);
-    pinMode(BTN_1, INPUT);
-    pinMode(BTN_2, INPUT);
-    pinMode(BTN_3, INPUT);
+    pinMode(BTN_0, INPUT_PULLUP);
+    pinMode(BTN_1, INPUT_PULLUP);
+    pinMode(BTN_2, INPUT_PULLUP);
+    pinMode(BTN_3, INPUT_PULLUP);
+    
+    pinMode(BTN_0, INPUT_PULLUP);
+    pinMode(LED_BUILTIN, OUTPUT);
 }
 
 
 void loop(){
-    xPos = analogRead(vrX);
-    yPos = analogRead(vrY);
-    SW_state = digitalRead(SW);
-    mapX = map(xPos, 0, 1023, -512, 512);
-    mapY = map(yPos, 0, 1023, -512, 512);
+   xPos = analogRead(vrX);
+   yPos = analogRead(vrY);
+   SW_state = digitalRead(SW);
+   mapX = map(xPos, 0, 1023, -512, 512);
+   mapY = map(yPos, 0, 1023, -512, 512);
 
-    Serial.print("JST-");
-    Serial.print(mapX);
-    //Serial.print(" | Y: ");
-    Serial.print(";");
-    Serial.println(mapY);
-    //Serial.print(" | L3: ");
-    //Serial.println(SW_state);
-    if (BTN_0 == HIGH){
-        Serial.println("BTN-A:ON");
-    } else {
-        Serial.println("BTN-A:OFF");
+/*
+   Serial.print("JST-");
+   Serial.print(mapX);
+   Serial.print(" | Y: ");
+   Serial.print(";");
+   Serial.println(mapY);
+   Serial.print(" | L3: ");
+   Serial.println(SW_state);
+   */
+   //BUTTONS ARE ACTIVE HIGH
+   if (digitalRead(BTN_0) == HIGH){
+        Serial.println(0);
     }
-    
-    if (BTN_1 == HIGH){
-        Serial.println("BTN-B:ON");
-    } else {
-        Serial.println("BTN-B:OFF");
+    if (digitalRead(BTN_1) == HIGH){
+        Serial.println(1);
     }
-    
-    if (BTN_2 == HIGH){
-        Serial.println("BTN-C:ON");
-    } else {
-        Serial.println("BTN-C:OFF");
+    if (digitalRead(BTN_2) == HIGH){
+        Serial.println(2);
     }
-    
-    if (BTN_3 == HIGH){
-        Serial.println("BTN-D:ON");
-    } else {
-        Serial.println("BTN-D:OFF");
+    if (digitalRead(BTN_3) == HIGH){
+        Serial.println(4);
     }
 }
