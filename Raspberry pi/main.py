@@ -21,27 +21,23 @@ def decode_command(string, cntrl):
 
         if cmd[1] == "A:ON":
             cntrl.write(e.EV_KEY, e.KEY_0, 1)
-
-        elif cmd[1] == "A:OFF":
+        else:
             cntrl.write(e.EV_KEY, e.KEY_0, 0)
 
-        elif cmd[1] == "B:ON":
+        if cmd[1] == "B:ON":
             cntrl.write(e.EV_KEY, e.KEY_1, 1)
+        else:
+            cntrl.write(e.EV_KEY, e.KEY_1, 0)
 
-        elif cmd[1] == "B:OFF":
-            cntrl.write(e.EV_KEY, e.KEY_1, 1)
-
-        elif cmd[1] == "C:ON":
+        if cmd[1] == "C:ON":
             cntrl.write(e.EV_KEY, e.KEY_2, 1)
+        else:
+            cntrl.write(e.EV_KEY, e.KEY_2, 0)
 
-        elif cmd[1] == "C:OFF":
-            cntrl.write(e.EV_KEY, e.KEY_2, 1)
-
-        elif cmd[1] == "D:ON":
+        if cmd[1] == "D:ON":
             cntrl.write(e.EV_KEY, e.KEY_3, 1)
-
-        elif cmd[1] == "D:OFF":
-            cntrl.write(e.EV_KEY, e.KEY_3, 1)
+        else:
+            cntrl.write(e.EV_KEY, e.KEY_3, 0)
 
     elif cmd[0] == "JST":
         coord = cmd[1].split(";")
