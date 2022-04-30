@@ -79,13 +79,18 @@ def setup():
 
 if __name__ == '__main__':
     #ser = setup()
-    #print("Found serial " + ser)
     print("Code started successfully\n")
+
     name = '/dev/ttyACM0'
     ser = serial.Serial(port=name, baudrate=9600, timeout=1)
+    print("Found serial " + ser)
+
     ser.flush()
+    print("Flushed serial successfully")
+
     controller = create_controller()
-    print("controller created")
+    print("Controller created")
+    
     while True:
         if ser.in_waiting > 0:
             command = ser.readline().decode('utf-8').rstrip()
