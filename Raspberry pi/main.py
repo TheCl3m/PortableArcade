@@ -1,5 +1,5 @@
 import serial
-from evdev import UInput, AbsInfo, ecodes as e
+from evdev import uinput, AbsInfo, ecodes as e
 
 cap = {e.EV_KEY: [e.KEY_0, e.KEY_1, e.KEY_2, e.KEY_3],
        e.EV_ABS: [(e.ABS_X, AbsInfo(0, -512, 512,
@@ -11,7 +11,7 @@ devices = ['/dev/ttyACM0', '/dev/ttyACM1']
 
 
 def create_controller():
-    return UInput(cap, "VirtualController", version=0x1)
+    return uinput(cap, "VirtualController", version=0x1)
 
 
 def decode_command(string, cntrl):
