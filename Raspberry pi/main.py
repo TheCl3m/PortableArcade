@@ -20,33 +20,37 @@ def create_controller():
 
 
 def decode_command(vector, cntrl):
-    if vector is None:
+    """
+
+     if vector is None:
         cntrl.emit(uinput.BTN_A, 0)
         cntrl.emit(uinput.BTN_B, 0)
         cntrl.emit(uinput.BTN_X, 0)
         cntrl.emit(uinput.BTN_Y, 0)
 
     else:
-        cmd = vector
-        x_coord = cmd & 1023
-        cmd = cmd >> 10
-        y_coord = cmd & 1023
-        cmd = cmd >> 10
-        y_btn = cmd & 1
-        cmd = cmd >> 1
-        x_btn = cmd & 1
-        cmd = cmd >> 1
-        b_btn = cmd & 1
-        cmd = cmd >> 1
-        a_btn = cmd & 1
+    """
 
-        cntrl.emit(uinput.BTN_A, a_btn)
-        cntrl.emit(uinput.BTN_B, b_btn)
-        cntrl.emit(uinput.BTN_X, x_btn)
-        cntrl.emit(uinput.BTN_Y, y_btn)
+    cmd = vector
+    x_coord = cmd & 1023
+    cmd = cmd >> 10
+    y_coord = cmd & 1023
+    cmd = cmd >> 10
+    y_btn = cmd & 1
+    cmd = cmd >> 1
+    x_btn = cmd & 1
+    cmd = cmd >> 1
+    b_btn = cmd & 1
+    cmd = cmd >> 1
+    a_btn = cmd & 1
 
-        cntrl.emit(uinput.ABS_X, x_coord)
-        cntrl.emit(uinput.ABS_Y, y_coord)
+    cntrl.emit(uinput.BTN_A, a_btn)
+    cntrl.emit(uinput.BTN_B, b_btn)
+    cntrl.emit(uinput.BTN_X, x_btn)
+    cntrl.emit(uinput.BTN_Y, y_btn)
+
+    cntrl.emit(uinput.ABS_X, x_coord)
+    cntrl.emit(uinput.ABS_Y, y_coord)
 
     return vector
 
@@ -57,7 +61,7 @@ def setup():
         for name in devices:
             try:
                 print("Trying to connect to " + name)
-                srl = serial.Serial(port=name, baudrate=9600, timeout=1, bytesize=serial.EIGHTBITS)
+                srl = serial.Serial(port=name, baudrate=9600, timeout=1)
                 srl.write("CHECK\n")
                 print("Connected to " + name)
                 return srl
@@ -65,19 +69,12 @@ def setup():
                 continue
 
 
-def bytes_to_int(bytes):
-    result = 0
-    for b in bytes:
-        result = result * 256 + int(b)
-    return result
+
 
 if __name__ == '__main__':
     print("Code started successfully\n")
     ser = setup()
 
-
-    #name = '/dev/ttyUSB0'
-    #ser = serial.Serial(port=name, baudrate=9600, timeout=1)
     print("Found serial " + ser.name)
 
     ser.flush()
@@ -92,13 +89,12 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             if tryneeded:
                 try :
-                    command = ser.readline()
-                    decode_command(bytes_to_int(command), cntrl=controller)
+                    command = ser.readline().decode('utf-8').rstrip()
+                    decode_command(int(command), cntrl=controller)
                     tryneeded = False
                 except:
                     print("ERROR: Could not read")
             else:
-                command = ser.readline()
-                decode_command(bytes_to_int(command), cntrl=controller)
-        else:
-            decode_command(None, cntrl=controller)
+                command = ser.readline().decode('utf-8').rstrip()
+                decode_command(int(command), cntrl=controller)
+

@@ -22,7 +22,7 @@ int SW_state = 0;
 int mapX = 0;
 int mapY = 0;
 bool configured = false;
-int btn = 0;
+uint32_t btn = 0;
 
 
 void setup(){
@@ -55,45 +55,34 @@ void loop(){
     }
     else {
         SW_state = digitalRead(SW);
-        int mapX_temp = analogRead(vrX);
-        int mapY_temp = analogRead(vrY);
+        int mapX = analogRead(vrX);
+        int mapy = analogRead(vrY);
 
         bool btn0 = digitalRead(BTN_0) == HIGH;
         bool btn1 = digitalRead(BTN_1) == HIGH;
         bool btn2 = digitalRead(BTN_2) == HIGH;
         bool btn3 = digitalRead(BTN_3) == HIGH;
 
-        if (mapX != mapX_temp ||
-            mapY != mapY_temp ||
-            btn0 ||
-            btn1 ||
-            btn2 ||
-            btn3){
 
-            mapX = mapX_temp;
-            mapY = mapY_temp;
+        btn = 0;
+        if (btn0) {btn = btn + 1;}
+        btn = btn << 1;
+        if (btn1) { btn = btn + 1;}
+        btn = btn << 1;
+        if (btn2) { btn = btn + 1;}
+        btn = btn << 1;
+        if (btn3) { btn = btn + 1;}
 
-            btn = 0;
-            if (btn0) {btn = btn + 1;}
-            btn = btn << 1;
-            if (btn1) { btn = btn + 1;}
-            btn = btn << 1;
-            if (btn2) { btn = btn + 1;}
-            btn = btn << 1;
-            if (btn3) { btn = btn + 1;}
+        uint32_t cmd = btn;
+        cmd = cmd << 10;
+        cmd = cmd + mapY;
+        cmd = cmd << 10;
+        cmd = cmd + mapX;
 
-            int cmd = btn;
-            cmd = cmd << 10;
-            cmd = cmd + mapY;
-            cmd = cmd << 10;
-            cmd = cmd + mapX;
 
-            char b[4];
-            String str = String(cmd);
+        Serial.println(cmd);
 
-            Serial.println(str.toCharArray(b, 4);
-
-            delay(10);
+        delay(10);
         }
 
 
