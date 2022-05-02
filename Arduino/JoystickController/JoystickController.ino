@@ -46,6 +46,7 @@ void setup(){
 
 void loop(){
     if (!configured && Serial.available() > 0){
+        Serial.println("HELLO");
         configured = true;
     }
     else {
