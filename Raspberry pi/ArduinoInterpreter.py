@@ -20,68 +20,35 @@ def create_controller():
 
 
 def decode_command(string, cntrl):
-    cmd = string.split("_")
+    if string is None:
+        cntrl.emit(uinput.BTN_A, 0)
+        cntrl.emit(uinput.BTN_B, 0)
+        cntrl.emit(uinput.BTN_X, 0)
+        cntrl.emit(uinput.BTN_Y, 0)
 
-    if cmd[0] == "BTN":
+    else:
+        cmd = string
+        x_coord = cmd & 1023
+        cmd = cmd >> 10
+        y_coord = cmd & 1023
+        cmd = cmd >> 10
+        y_btn = cmd & 1
+        cmd = cmd >> 1
+        x_btn = cmd & 1
+        cmd = cmd >> 1
+        b_btn = cmd & 1
+        cmd = cmd >> 1
+        a_btn = cmd & 1
 
-        if cmd[1] is not None:
-            com = cmd[1]
-            a = com & 1
-            com = com >> 1
-            b = com & 1
-            com = com >> 1
-            x = com & 1
-            com = com >> 1
-            y = com & 1
+        cntrl.emit(uinput.BTN_A, a_btn)
+        cntrl.emit(uinput.BTN_B, b_btn)
+        cntrl.emit(uinput.BTN_X, x_btn)
+        cntrl.emit(uinput.BTN_Y, y_btn)
 
-            cntrl.emit(uinput.BTN_A, a)
-            cntrl.emit(uinput.BTN_B, b)
-            cntrl.emit(uinput.BTN_X, x)
-            cntrl.emit(uinput.BTN_Y, y)
+        cntrl.emit(uinput.ABS_X, x_coord)
+        cntrl.emit(uinput.ABS_Y, y_coord)
 
-        """
-        
-        if cmd[1] == "A:ON":
-            cntrl.emit(uinput.BTN_A, 1)
-            print("A ON")
-        else:
-            cntrl.emit(uinput.BTN_A, 0)
-
-        if cmd[1] == "B:ON":
-            cntrl.emit(uinput.BTN_B, 1)
-            print("B ON")
-        else:
-            cntrl.emit(uinput.BTN_B, 0)
-
-        if cmd[1] == "C:ON":
-            cntrl.emit(uinput.BTN_X, 1)
-            print("C ON")
-        else:
-            cntrl.emit(uinput.BTN_X, 0)
-
-        if cmd[1] == "D:ON":
-            cntrl.emit(uinput.BTN_Y, 1)
-            print("D ON")
-        else:
-            cntrl.emit(uinput.BTN_Y, 0)
-        
-        """
-
-        # if cmd[1] == "L3:ON":
-        #   cntrl.write(e.EV_KEY, e.KEY_4, 1)
-        # else:
-        #   cntrl.write(e.EV_KEY, e.KEY_4, 0)
-
-
-
-
-    elif cmd[0] == "JST":
-        coord = cmd[1].split(";")
-        print(coord)
-        cntrl.emit(uinput.ABS_X, coord[0])
-        cntrl.emit(uinput.ABS_Y, coord[1])
-
-    return cmd
+    return string
 
 
 def setup():
