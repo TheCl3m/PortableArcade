@@ -12,7 +12,7 @@ events = (
     uinput.ABS_Y + (-512, 512, 0, 0),
 )
 
-devices = ['/dev/ttyACM0', '/dev/ttyACM1']
+devices = ['/dev/ttyUSB0', '/dev/ttyUSB1']
 
 
 def create_controller():
@@ -70,11 +70,13 @@ def setup():
     while True:
         for name in devices:
             try:
+                print("Trying to connect to " + name)
                 srl = serial.Serial(port=name, baudrate=9600, timeout=1)
                 srl.write("CHECK\n")
 
                 # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
                 if srl.readline().decode('utf-8').rstrip() == "HELLO":
+                    print("Connected to " + name)
                     #ser.write("LINKED\n")
                     return srl
             except:
