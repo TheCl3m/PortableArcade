@@ -65,6 +65,12 @@ def setup():
                 continue
 
 
+def bytes_to_int(bytes):
+    result = 0
+    for b in bytes:
+        result = result * 256 + int(b)
+    return result
+
 if __name__ == '__main__':
     print("Code started successfully\n")
     ser = setup()
@@ -86,12 +92,12 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             if tryneeded:
                 try :
-                    command = ser.readline()
-                    decode_command(command, cntrl=controller)
+                    command = ser.read_until(size=4)
+                    decode_command(bytes_to_int(command), cntrl=controller)
                 except:
                     print("ERROR: Could not read")
             else:
-                command = ser.readline()
-                decode_command(command, cntrl=controller)
+                command = ser.readline().rstrip()
+                decode_command(bytes_to_int(command), cntrl=controller)
         else:
             decode_command(None, cntrl=controller)
