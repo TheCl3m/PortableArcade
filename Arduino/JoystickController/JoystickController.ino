@@ -47,11 +47,14 @@ void loop(){
    xPos = analogRead(vrX);
    yPos = analogRead(vrY);
    SW_state = digitalRead(SW);
-   mapX = map(xPos, 0, 1023, -512, 512);
-   mapY = map(yPos, 0, 1023, -512, 512);
+   int mapX_temp = map(xPos, 0, 1023, -512, 512);
+   int mapY_temp = map(yPos, 0, 1023, -512, 512);
 
-
-   Serial.print("JST-");
+   if (mapX != mapX_temp || mapY != mapY_temp){
+       mapX = mapX_temp;
+       mapY = mapY_temp;
+   }
+   Serial.print("JST_");
    Serial.print(mapX);
    Serial.print(";");
    Serial.println(mapY);
@@ -60,15 +63,16 @@ void loop(){
    
    //BUTTONS ARE ACTIVE HIGH
    if (digitalRead(BTN_0) == HIGH){
-        Serial.println("BTN-A:ON");
+        Serial.println("BTN_A:ON");
     }
     if (digitalRead(BTN_1) == HIGH){
-        Serial.println("BTN-B:ON");
+        Serial.println("BTN_B:ON");
     }
     if (digitalRead(BTN_2) == HIGH){
-        Serial.println("BTN-C:ON");
+        Serial.println("BTN_C:ON");
     }
     if (digitalRead(BTN_3) == HIGH){
-        Serial.println("BTN-D:ON");
+        Serial.println("BTN_D:ON");
     }
+    delay(10);
 }
