@@ -71,7 +71,7 @@ void loop(){
         //Serial.println(SW_state);
         
         //BUTTONS ARE ACTIVE HIGH
-        Serial.print("BTN_")
+        Serial.print("BTN_");
         if (digitalRead(BTN_0) == HIGH){
                 Serial.println("A:ON");
             }
