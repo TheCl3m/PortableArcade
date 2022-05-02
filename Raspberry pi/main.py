@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     controller = create_controller()
     print("Controller created")
-    
+
     while True:
         if ser.in_waiting > 0:
             command = ser.readline().decode('utf-8').rstrip()
