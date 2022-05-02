@@ -19,15 +19,15 @@ def create_controller():
     return Device(events)
 
 
-def decode_command(string, cntrl):
-    if string is None:
+def decode_command(vector, cntrl):
+    if vector is None:
         cntrl.emit(uinput.BTN_A, 0)
         cntrl.emit(uinput.BTN_B, 0)
         cntrl.emit(uinput.BTN_X, 0)
         cntrl.emit(uinput.BTN_Y, 0)
 
     else:
-        cmd = string
+        cmd = vector
         x_coord = cmd & 1023
         cmd = cmd >> 10
         y_coord = cmd & 1023
@@ -48,7 +48,7 @@ def decode_command(string, cntrl):
         cntrl.emit(uinput.ABS_X, x_coord)
         cntrl.emit(uinput.ABS_Y, y_coord)
 
-    return string
+    return vector
 
 
 def setup():
@@ -86,7 +86,7 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             if tryneeded:
                 try:
-                    command = ser.readline().decode('utf-8').rstrip()
+                    command = ser.readline()
                     decode_command(command, cntrl=controller)
                 except:
                     print("UTF-8 error, retrying...")
