@@ -1,45 +1,52 @@
-
 import serial
-from evdev import _uinput, ecodes as e
-from evdev.device import AbsInfo
+from uinput import Device
+import uinput
 
-cap = {e.EV_KEY: [e.KEY_0, e.KEY_1, e.KEY_2, e.KEY_3],
-       e.EV_ABS: [(e.ABS_X, AbsInfo(0, -512, 512,
-                                    0, 0, 0)),
-                  (e.ABS_Y, AbsInfo(0, -512, 512, 0, 0, 0)),
-                  (e.ABS_MT_POSITION_X, (0, 128, 255, 0))]}
+events = (
+    uinput.BTN_A,
+    uinput.BTN_B,
+    uinput.BTN_X,
+    uinput.BTN_Y,
+    uinput.BTN_JOYSTICK,
+    uinput.ABS_X + (-512, 512, 0, 0),
+    uinput.ABS_Y + (-512, 512, 0, 0),
+)
 
 devices = ['/dev/ttyACM0', '/dev/ttyACM1']
 
 
 def create_controller():
-    return _uinput(cap, "VirtualController", version=0x1)
+    return Device(events)
 
 
 def decode_command(string, cntrl):
-    cmd = string.split("-")
+    cmd = string.split("_")
 
     if cmd[0] == "BTN":
 
         if cmd[1] == "A:ON":
-            cntrl.write(e.EV_KEY, e.KEY_0, 1)
+            cntrl.emit(uinput.BTN_A, 1)
+            print("A ON")
         else:
-            cntrl.write(e.EV_KEY, e.KEY_0, 0)
+            cntrl.emit(uinput.BTN_A, 0)
 
         if cmd[1] == "B:ON":
-            cntrl.write(e.EV_KEY, e.KEY_1, 1)
+            cntrl.emit(uinput.BTN_B, 1)
+            print("B ON")
         else:
-            cntrl.write(e.EV_KEY, e.KEY_1, 0)
+            cntrl.emit(uinput.BTN_B, 0)
 
         if cmd[1] == "C:ON":
-            cntrl.write(e.EV_KEY, e.KEY_2, 1)
+            cntrl.emit(uinput.BTN_X, 1)
+            print("C ON")
         else:
-            cntrl.write(e.EV_KEY, e.KEY_2, 0)
+            cntrl.emit(uinput.BTN_X, 0)
 
         if cmd[1] == "D:ON":
-            cntrl.write(e.EV_KEY, e.KEY_3, 1)
+            cntrl.emit(uinput.BTN_Y, 1)
+            print("D ON")
         else:
-            cntrl.write(e.EV_KEY, e.KEY_3, 0)
+            cntrl.emit(uinput.BTN_Y, 0)
 
 
         #if cmd[1] == "L3:ON":
@@ -52,8 +59,9 @@ def decode_command(string, cntrl):
 
     elif cmd[0] == "JST":
         coord = cmd[1].split(";")
-        cntrl.write(e.EV_ABS, e.ABS_X, coord[0])
-        cntrl.write(e.EV_ABS, e.ABS_Y, coord[1])
+        print(coord)
+        cntrl.emit(uinput.ABS_X, coord[0])
+        cntrl.emit(uinput.ABS_Y, coord[1])
 
     return cmd
 
@@ -75,14 +83,29 @@ def setup():
 
 
 if __name__ == '__main__':
-    print("Code started\n")
-    ser = setup()
-    print("Found serial " + ser)
+    #ser = setup()
+    print("Code started successfully\n")
+
+    name = '/dev/ttyUSB0'
+    ser = serial.Serial(port=name, baudrate=9600, timeout=1)
+    print("Found serial " + ser.name)
+
     ser.flush()
+    print("Flushed serial successfully")
+
     controller = create_controller()
-    print("controller created")
+    print("Controller created")
+    
+    tryneeded = True
+
     while True:
         if ser.in_waiting > 0:
-            command = ser.readline().decode('utf-8').rstrip()
-            print(decode_command(command, cntrl=controller))
-
+            if tryneeded:
+                try :
+                    command = ser.readline().decode('utf-8').rstrip()
+                    decode_command(command, cntrl=controller)
+                except:
+                    print("UTF-8 error, retrying...")
+            else:
+                command = ser.readline().decode('utf-8').rstrip()
+                decode_command(command, cntrl=controller)
