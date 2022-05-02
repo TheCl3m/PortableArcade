@@ -12,7 +12,7 @@ events = (
     uinput.ABS_Y + (0, 1023, 0, 0),
 )
 
-devices = ['/dev/ttyACM0', '/dev/ttyACM1']
+devices = ['/dev/ttyUSB0', '/dev/ttyUSB1']
 
 
 def create_controller():
@@ -52,26 +52,29 @@ def decode_command(vector, cntrl):
 
 
 def setup():
+
     while True:
         for name in devices:
             try:
+                print("Trying to connect to " + name)
                 srl = serial.Serial(port=name, baudrate=9600, timeout=1)
-                srl.write("CHECK")
+                srl.write("CHECK\n")
 
                 # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
-                if srl.readline().decode('utf-8').rstrip() is None:
-                    ser.write("LINKED")
+                if srl.readline().decode('utf-8').rstrip() == "HELLO":
+                    print("Connected to " + name)
+                    ser.write("LINKED\n")
                     return srl
             except:
                 continue
 
 
 if __name__ == '__main__':
-    # ser = setup()
+    ser = setup()
     print("Code started successfully\n")
 
-    name = '/dev/ttyUSB0'
-    ser = serial.Serial(port=name, baudrate=9600, timeout=1)
+    #name = '/dev/ttyUSB0'
+    #ser = serial.Serial(port=name, baudrate=9600, timeout=1)
     print("Found serial " + ser.name)
 
     ser.flush()
@@ -85,11 +88,13 @@ if __name__ == '__main__':
     while True:
         if ser.in_waiting > 0:
             if tryneeded:
-                try:
+                try :
                     command = ser.readline()
                     decode_command(command, cntrl=controller)
                 except:
-                    print("UTF-8 error, retrying...")
+                    print("ERROR: Could not read")
             else:
-                command = ser.readline().decode('utf-8').rstrip()
+                command = ser.readline()
                 decode_command(command, cntrl=controller)
+        else:
+            decode_command(None, cntrl=controller)

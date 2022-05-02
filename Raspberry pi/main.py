@@ -59,19 +59,16 @@ def setup():
                 print("Trying to connect to " + name)
                 srl = serial.Serial(port=name, baudrate=9600, timeout=1)
                 srl.write("CHECK\n")
-
-                # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
-                if srl.readline().decode('utf-8').rstrip() == "HELLO":
-                    print("Connected to " + name)
-                    ser.write("LINKED\n")
-                    return srl
+                print("Connected to " + name)
+                return srl
             except:
                 continue
 
 
 if __name__ == '__main__':
-    ser = setup()
     print("Code started successfully\n")
+    ser = setup()
+
 
     #name = '/dev/ttyUSB0'
     #ser = serial.Serial(port=name, baudrate=9600, timeout=1)
@@ -94,5 +91,7 @@ if __name__ == '__main__':
                 except:
                     print("ERROR: Could not read")
             else:
-                command = ser.readline().decode('utf-8').rstrip()
+                command = ser.readline()
                 decode_command(command, cntrl=controller)
+        else:
+            decode_command(None, cntrl=controller)
