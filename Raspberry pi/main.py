@@ -74,8 +74,8 @@ def setup():
                 srl.write("CHECK\n")
 
                 # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
-                if srl.readline().decode('utf-8').rstrip() is None:
-                    ser.write("LINKED\n")
+                if srl.readline().decode('utf-8').rstrip() == "HELLO":
+                    #ser.write("LINKED\n")
                     return srl
             except:
                 continue
