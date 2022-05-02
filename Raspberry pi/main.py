@@ -89,7 +89,7 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             if tryneeded:
                 try :
-                    command = ser.readline().decode('utf-8').rstrip()
+                    command = ser.readline()
                     decode_command(command, cntrl=controller)
                 except:
                     print("UTF-8 error, retrying...")
