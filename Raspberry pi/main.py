@@ -57,7 +57,7 @@ def setup():
         for name in devices:
             try:
                 print("Trying to connect to " + name)
-                srl = serial.Serial(port=name, baudrate=9600, timeout=1)
+                srl = serial.Serial(port=name, baudrate=9600, timeout=1, bytesize=serial.EIGHTBITS)
                 srl.write("CHECK\n")
                 print("Connected to " + name)
                 return srl
@@ -92,12 +92,13 @@ if __name__ == '__main__':
         if ser.in_waiting > 0:
             if tryneeded:
                 try :
-                    command = ser.read_until(size=4)
+                    command = ser.readline()
                     decode_command(bytes_to_int(command), cntrl=controller)
+                    tryneeded = False
                 except:
                     print("ERROR: Could not read")
             else:
-                command = ser.readline().rstrip()
+                command = ser.readline()
                 decode_command(bytes_to_int(command), cntrl=controller)
         else:
             decode_command(None, cntrl=controller)

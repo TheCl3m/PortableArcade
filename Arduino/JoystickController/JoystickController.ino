@@ -87,7 +87,11 @@ void loop(){
             cmd = cmd + mapY;
             cmd = cmd << 10;
             cmd = cmd + mapX;
-            Serial.println(cmd);
+
+            char b[4];
+            String str = String(cmd);
+
+            Serial.println(str.toCharArray(b, 4);
 
             delay(10);
         }
