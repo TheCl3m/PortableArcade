@@ -92,7 +92,7 @@ if __name__ == '__main__':
                     command = ser.readline()
                     decode_command(command, cntrl=controller)
                 except:
-                    print("UTF-8 error, retrying...")
+                    print("ERROR: Could not read")
             else:
                 command = ser.readline().decode('utf-8').rstrip()
                 decode_command(command, cntrl=controller)
