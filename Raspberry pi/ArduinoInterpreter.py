@@ -8,8 +8,8 @@ events = (
     uinput.BTN_X,
     uinput.BTN_Y,
     uinput.BTN_JOYSTICK,
-    uinput.ABS_X + (-512, 512, 0, 0),
-    uinput.ABS_Y + (-512, 512, 0, 0),
+    uinput.ABS_X + (0, 1023, 0, 0),
+    uinput.ABS_Y + (0, 1023, 0, 0),
 )
 
 devices = ['/dev/ttyACM0', '/dev/ttyACM1']

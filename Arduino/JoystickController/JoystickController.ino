@@ -22,6 +22,7 @@ int SW_state = 0;
 int mapX = 0;
 int mapY = 0;
 bool configured = false;
+int btn = 0;
 
 
 void setup(){
