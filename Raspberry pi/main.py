@@ -70,7 +70,7 @@ def setup():
 
 
 if __name__ == '__main__':
-    #ser = setup()
+    ser = setup()
     print("Code started successfully\n")
 
     name = '/dev/ttyUSB0'
