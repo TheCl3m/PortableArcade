@@ -24,6 +24,23 @@ def decode_command(string, cntrl):
 
     if cmd[0] == "BTN":
 
+        if cmd[1] is not None:
+            com = cmd[1]
+            a = com & 1
+            com = com >> 1
+            b = com & 1
+            com = com >> 1
+            x = com & 1
+            com = com >> 1
+            y = com & 1
+
+            cntrl.emit(uinput.BTN_A, a)
+            cntrl.emit(uinput.BTN_B, b)
+            cntrl.emit(uinput.BTN_X, x)
+            cntrl.emit(uinput.BTN_Y, y)
+
+        """
+        
         if cmd[1] == "A:ON":
             cntrl.emit(uinput.BTN_A, 1)
             print("A ON")
@@ -47,12 +64,13 @@ def decode_command(string, cntrl):
             print("D ON")
         else:
             cntrl.emit(uinput.BTN_Y, 0)
+        
+        """
 
-
-        #if cmd[1] == "L3:ON":
-         #   cntrl.write(e.EV_KEY, e.KEY_4, 1)
-        #else:
-         #   cntrl.write(e.EV_KEY, e.KEY_4, 0)
+        # if cmd[1] == "L3:ON":
+        #   cntrl.write(e.EV_KEY, e.KEY_4, 1)
+        # else:
+        #   cntrl.write(e.EV_KEY, e.KEY_4, 0)
 
 
 
@@ -67,7 +85,6 @@ def decode_command(string, cntrl):
 
 
 def setup():
-
     while True:
         for name in devices:
             try:
@@ -83,7 +100,7 @@ def setup():
 
 
 if __name__ == '__main__':
-    #ser = setup()
+    # ser = setup()
     print("Code started successfully\n")
 
     name = '/dev/ttyUSB0'
@@ -95,13 +112,13 @@ if __name__ == '__main__':
 
     controller = create_controller()
     print("Controller created")
-    
+
     tryneeded = True
 
     while True:
         if ser.in_waiting > 0:
             if tryneeded:
-                try :
+                try:
                     command = ser.readline().decode('utf-8').rstrip()
                     decode_command(command, cntrl=controller)
                 except:

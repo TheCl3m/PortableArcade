@@ -62,27 +62,36 @@ void loop(){
         if (mapX != mapX_temp || mapY != mapY_temp){
             mapX = mapX_temp;
             mapY = mapY_temp;
+            Serial.print("JST_");
+            Serial.print(mapX);
+            Serial.print(";");
+            Serial.println(mapY);
         }
-        Serial.print("JST_");
-        Serial.print(mapX);
-        Serial.print(";");
-        Serial.println(mapY);
+
         //Serial.print("L3:");
         //Serial.println(SW_state);
         
         //BUTTONS ARE ACTIVE HIGH
         Serial.print("BTN_");
         if (digitalRead(BTN_0) == HIGH){
-                Serial.println("A:ON");
+                Serial.print("1");
+            } else {
+                Serial.print("0");
             }
             if (digitalRead(BTN_1) == HIGH){
-                Serial.println("B:ON");
+                Serial.print("1");
+            } else {
+                Serial.print("0");
             }
             if (digitalRead(BTN_2) == HIGH){
-                Serial.println("C:ON");
+                Serial.print("1");
+            } else {
+                Serial.print("0");
             }
             if (digitalRead(BTN_3) == HIGH){
-                Serial.println("D:ON");
+                Serial.println("1");
+            } else {
+                Serial.println("0");
             }
             delay(10);
     }
