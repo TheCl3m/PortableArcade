@@ -62,16 +62,17 @@ void loop(){
         if (mapX != mapX_temp || mapY != mapY_temp){
             mapX = mapX_temp;
             mapY = mapY_temp;
+            Serial.print("JST_");
+            Serial.print(mapX);
+            Serial.print(";");
+            Serial.println(mapY);
         }
-        Serial.print("JST_");
-        Serial.print(mapX);
-        Serial.print(";");
-        Serial.println(mapY);
+       
         //Serial.print("L3:");
         //Serial.println(SW_state);
         
         //BUTTONS ARE ACTIVE HIGH
-        Serial.print("BTN_")
+        Serial.print("BTN_");
         if (digitalRead(BTN_0) == HIGH){
                 Serial.println("A:ON");
             }
