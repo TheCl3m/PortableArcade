@@ -1,6 +1,7 @@
 import serial
 from uinput import Device
 import uinput
+import time
 
 events = (
     uinput.BTN_A,
@@ -8,8 +9,8 @@ events = (
     uinput.BTN_X,
     uinput.BTN_Y,
     uinput.BTN_JOYSTICK,
-    uinput.ABS_X + (-512, 512, 0, 0),
-    uinput.ABS_Y + (-512, 512, 0, 0),
+    uinput.ABS_X + (0, 1023, 0, 0),
+    uinput.ABS_Y + (0, 1023, 0, 0),
 )
 
 devices = ['/dev/ttyUSB0', '/dev/ttyUSB1']
@@ -19,50 +20,40 @@ def create_controller():
     return Device(events)
 
 
-def decode_command(string, cntrl):
-    cmd = string.split("_")
+def decode_command(vector, cntrl):
+    """
 
-    if cmd[0] == "BTN":
+     if vector is None:
+        cntrl.emit(uinput.BTN_A, 0)
+        cntrl.emit(uinput.BTN_B, 0)
+        cntrl.emit(uinput.BTN_X, 0)
+        cntrl.emit(uinput.BTN_Y, 0)
 
-        if cmd[1] == "A:ON":
-            cntrl.emit(uinput.BTN_A, 1)
-            print("A ON")
-        else:
-            cntrl.emit(uinput.BTN_A, 0)
+    else:
+    """
 
-        if cmd[1] == "B:ON":
-            cntrl.emit(uinput.BTN_B, 1)
-            print("B ON")
-        else:
-            cntrl.emit(uinput.BTN_B, 0)
+    cmd = vector
+    x_coord = cmd & 1023
+    cmd = cmd >> 10
+    y_coord = cmd & 1023
+    cmd = cmd >> 10
+    y_btn = cmd & 1
+    cmd = cmd >> 1
+    x_btn = cmd & 1
+    cmd = cmd >> 1
+    b_btn = cmd & 1
+    cmd = cmd >> 1
+    a_btn = cmd & 1
 
-        if cmd[1] == "C:ON":
-            cntrl.emit(uinput.BTN_X, 1)
-            print("C ON")
-        else:
-            cntrl.emit(uinput.BTN_X, 0)
+    cntrl.emit(uinput.BTN_A, a_btn)
+    cntrl.emit(uinput.BTN_B, b_btn)
+    cntrl.emit(uinput.BTN_X, x_btn)
+    cntrl.emit(uinput.BTN_Y, y_btn)
 
-        if cmd[1] == "D:ON":
-            cntrl.emit(uinput.BTN_Y, 1)
-            print("D ON")
-        else:
-            cntrl.emit(uinput.BTN_Y, 0)
+    cntrl.emit(uinput.ABS_X, x_coord)
+    cntrl.emit(uinput.ABS_Y, y_coord)
 
-
-        #if cmd[1] == "L3:ON":
-         #   cntrl.write(e.EV_KEY, e.KEY_4, 1)
-        #else:
-         #   cntrl.write(e.EV_KEY, e.KEY_4, 0)
-
-
-
-
-    elif cmd[0] == "JST":
-        coord = cmd[1].split(";")
-        cntrl.emit(uinput.ABS_X, coord[0])
-        cntrl.emit(uinput.ABS_Y, coord[1])
-
-    return cmd
+    return vector
 
 
 def setup():
@@ -73,22 +64,18 @@ def setup():
                 print("Trying to connect to " + name)
                 srl = serial.Serial(port=name, baudrate=9600, timeout=1)
                 srl.write("CHECK\n")
-
-                # Si on recoit une reponse on envoie un msg a l'arduino correspondante et on sort de la boucle
-                if srl.readline().decode('utf-8').rstrip() == "HELLO":
-                    print("Connected to " + name)
-                    #ser.write("LINKED\n")
-                    return srl
+                print("Connected to " + name)
+                return srl
             except:
                 continue
 
 
-if __name__ == '__main__':
-    #ser = setup()
-    print("Code started successfully\n")
 
-    name = '/dev/ttyUSB0'
-    ser = serial.Serial(port=name, baudrate=9600, timeout=1)
+
+if __name__ == '__main__':
+    print("Code started successfully\n")
+    ser = setup()
+
     print("Found serial " + ser.name)
 
     ser.flush()
@@ -104,9 +91,11 @@ if __name__ == '__main__':
             if tryneeded:
                 try :
                     command = ser.readline().decode('utf-8').rstrip()
-                    decode_command(command, cntrl=controller)
+                    decode_command(int(command), cntrl=controller)
+                    tryneeded = False
                 except:
-                    print("UTF-8 error, retrying...")
+                    print("ERROR: Could not read")
             else:
                 command = ser.readline().decode('utf-8').rstrip()
-                decode_command(command, cntrl=controller)
+                decode_command(int(command), cntrl=controller)
+        time.sleep(0.01)

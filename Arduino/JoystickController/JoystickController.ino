@@ -22,6 +22,14 @@ int SW_state = 0;
 int mapX = 0;
 int mapY = 0;
 bool configured = false;
+uint32_t btn = 0;
+
+bool btn0 = false;
+bool btn1 = false;
+bool btn2 = false;
+bool btn3 = false;
+
+bool needToUpdate(int old, int n);
 
 
 void setup(){
@@ -47,44 +55,55 @@ void setup(){
 }
 
 
+bool needToUpdate(int old, int n){
+      return abs(old-n) > 20;
+}
+
 void loop(){
     if (!configured && Serial.available() > 0){
         Serial.println("HELLO");
         configured = true;
     }
     else {
-        xPos = analogRead(vrX);
-        yPos = analogRead(vrY);
         SW_state = digitalRead(SW);
-        int mapX_temp = map(xPos, 0, 1023, -512, 512);
-        int mapY_temp = map(yPos, 0, 1023, -512, 512);
+        int mapX_new = analogRead(vrX);
+        int mapY_new = analogRead(vrY);
 
-        if (mapX != mapX_temp || mapY != mapY_temp){
-            mapX = mapX_temp;
-            mapY = mapY_temp;
-            Serial.print("JST_");
-            Serial.print(mapX);
-            Serial.print(";");
-            Serial.println(mapY);
-        }
-       
-        //Serial.print("L3:");
-        //Serial.println(SW_state);
-        
-        //BUTTONS ARE ACTIVE HIGH
-        Serial.print("BTN_");
-        if (digitalRead(BTN_0) == HIGH){
-                Serial.println("A:ON");
-            }
-            if (digitalRead(BTN_1) == HIGH){
-                Serial.println("B:ON");
-            }
-            if (digitalRead(BTN_2) == HIGH){
-                Serial.println("C:ON");
-            }
-            if (digitalRead(BTN_3) == HIGH){
-                Serial.println("D:ON");
-            }
+        bool btn0_new = digitalRead(BTN_0) == HIGH;
+        bool btn1_new = digitalRead(BTN_1) == HIGH;
+        bool btn2_new = digitalRead(BTN_2) == HIGH;
+        bool btn3_new = digitalRead(BTN_3) == HIGH;
+  
+        if (btn0 != btn0_new || btn1 != btn1_new || btn2 != btn2_new || btn3 != btn3_new || needToUpdate(mapX, mapX_new) || needToUpdate(mapY, mapY_new)){
+          
+            btn0 = btn0_new;
+            btn1 = btn1_new;
+            btn2 = btn2_new;
+            btn3 = btn3_new;
+            mapY = mapY_new;
+            mapX = mapX_new;
+
+            btn = 0;
+            if (btn0) {btn = btn + 1;}
+            btn = btn << 1;
+            if (btn1) { btn = btn + 1;}
+            btn = btn << 1;
+            if (btn2) { btn = btn + 1;}
+            btn = btn << 1;
+            if (btn3) { btn = btn + 1;}
+    
+            uint32_t cmd = btn;
+            cmd = cmd << 10;
+            cmd = cmd + mapY;
+            cmd = cmd << 10;
+            cmd = cmd + mapX;
+
+
+            Serial.println(cmd);
+    
             delay(10);
-    }
+        }
+
+     }
+
 }
