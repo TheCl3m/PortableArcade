@@ -11,30 +11,37 @@ const int sensorPin = A0; // Pin connected to sensor
 
 //Variables
 int sensorVal; // Analog value from the sensor
-float res; //resistance value
+uint32_t res = 0; //resistance value
+bool configured = false;
 
 
 void setup(void) {
   Serial.begin(9600);
 }
 
-
 void loop(void) {
-  sensorVal = analogRead(sensorPin);
-  res = sensorRawToPhys(sensorVal);
-  if (res > 0 && res < 4000) {
-    Serial.println("DROITE");
-  } else if (res >= 4000 && res < 6000) {
-    Serial.println("Milieu");
-  } else if (res >= 6000 && res <= 10000) {
-    Serial.println("GAUCHE");
+  if (!configured || Serial.available > 0){
+    Serial.println("HELLO");
+    configured = true;
+  } else {
+    sensorVal = analogRead(sensorPin);
+    uint32_t new_res = sensorRawToPhys(sensorVal) * (1023/10000);
+    if (new_res != res) {
+      res = new_res;
+      Serial.println(res);
+    }
+
+    delay(DELAY);
   }
+  
+
+  
   /*Serial.print(F("Raw value from sensor= "));
     Serial.println(sensorVal); // the analog reading
     Serial.print(F("Physical value from sensor = "));
     Serial.print(res); // the analog reading
     Serial.println(F(" ohm")); // the analog reading*/
-  delay(DELAY);
+  
 }
 
 
