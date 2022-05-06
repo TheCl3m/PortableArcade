@@ -1,8 +1,55 @@
-## Portable Arcade Project
+# Portable Arcade Project
 
 Welcome to the official page of the CS-358 Portable Arcade team project. This project was development during a semester at EPFL. All work is open-source and this page acts as a manual to let you build your own portable arcade !
 
-## General Description
+# General Description
+
+This project provides with all necessary assets to recreate a portable arcade system. This system is built with modularity in mind, such that you will be able to create new input methods for your needs ! 
+
+## Requisites
+
+- Raspberry Pi 1, 2, 3 or 4
+- One arduino Uno, Nano or Leonardo per input method 
+- USB cables to connect arduinos to the raspberry
+- Jumper cables for the arduino
+- At least 4 microswitches
+- At least one joystick 
+- Access to a 3D printer
+- Access to soldering material 
+- Access to an internet connection on the raspberry
+- Some courage ! 
+
+# Part 1. Software
+
+## Arduino
+
+Each Arduino board acts as the microcontroller of one input method, for example the joysticks and buttons. Even if it is not the best choice for value and space, it enables everyone to create new input device, without needing additional drivers. Every input method is plug and play ! 
+
+In the repository, you will find all the sketches for the three input devices we developed. Take the ```JoystickController.ino``` file for example. All input pins for buttons and joystick are specified as constants, you can freely change them as long as they match your connections. As you may notice, how the data is sent is not very clear. For performance reasons, we decided to use binary encoding of the controller status. Refer to the below section to understand it and be able to add custom input methods.
+
+### Binary encoding of the controller
+
+** TODO **
+
+## Raspberry Pi
+
+### Retropie
+
+For this project, we used Retropie to run the emulators. Please follow this link to learn how to install Retropie on your Raspberry Pi. We recommend you using the Raspberry installation utiliy that can be found here in order to install it rapidly. Once you installed it, you will need to install some additional python libraires namely :
+1. Py-Serial
+2. Python-Uinput
+
+
+
+### Main.py 
+
+Once this is done, you can download the ```main.py``` script from our repository. This script will enable the communication between the arduino boards and Retropie. This script supports plug and play as well as unplug ! 
+This section describes how the code works in case you are interested.
+
+### Making it all work together
+
+** TODO **
+
 
 
 ### Markdown
