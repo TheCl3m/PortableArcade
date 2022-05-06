@@ -1,7 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import serial
 from uinput import Device
 import uinput
 import time
+import pyudev
+import os
 
 events = (
     uinput.BTN_A,
@@ -11,9 +15,12 @@ events = (
     uinput.BTN_JOYSTICK,
     uinput.ABS_X + (0, 1023, 0, 0),
     uinput.ABS_Y + (0, 1023, 0, 0),
-)
+    )
 
-devices = ['/dev/ttyUSB0', '/dev/ttyUSB1']
+pending_devices = []
+devices = []
+controllers = []
+serials = []
 
 
 def create_controller():
@@ -56,46 +63,60 @@ def decode_command(vector, cntrl):
     return vector
 
 
-def setup():
+def device_change(action, device):
 
-    while True:
-        for name in devices:
-            try:
-                print("Trying to connect to " + name)
-                srl = serial.Serial(port=name, baudrate=9600, timeout=1)
-                srl.write("CHECK\n")
-                print("Connected to " + name)
-                return srl
-            except:
-                continue
+    # check if it is an arduino
 
+    if device.device_type == 'usb_device':
+        if device.get('ID_VENDOR_ID') == '1a86':
+            pending_devices.append(device.sys_path)
+            print("is an arduino")
+    elif device.device_type == 'usb_interface':
+        print("is usb_interface")
 
+        # if pending_device starts with device.sys_path
+
+        for pending_device in pending_devices:
+            if pending_device == device.sys_path[:len(pending_device)]:
+                print("is the right interface")
+                idx = (devices.index(device) if device
+                       in devices else -1)
+                if action == 'remove':
+                    if idx != -1:
+                        devices.pop(idx)
+                        controllers.pop(idx)
+                        serials.pop(idx)
+                        print("Removed " + str(device))
+                elif action == 'add':
+                    controllers.append(create_controller())
+                    path = [os.path.join('/dev', f) for f in
+                            os.listdir(device.sys_path)
+                            if f.startswith('tty')]
+                    print(path[0])
+                    serials.append(serial.Serial(path[0], 9600,
+                                   timeout=1))
+                    devices.append(device)
+                    print("Added " + str(device))
+                    pending_devices.remove(pending_device)
 
 
 if __name__ == '__main__':
-    print("Code started successfully\n")
-    ser = setup()
+    context = pyudev.Context()
+    monitor = pyudev.Monitor.from_netlink(context)
+    monitor.filter_by('usb')
+    observer = pyudev.MonitorObserver(monitor, device_change)
+    observer.start()
 
-    print("Found serial " + ser.name)
-
-    ser.flush()
-    print("Flushed serial successfully")
-
-    controller = create_controller()
-    print("Controller created")
-
-    tryneeded = True
+    print("Code started successfully")
 
     while True:
-        if ser.in_waiting > 0:
-            if tryneeded:
-                try :
+        for (i, dev) in enumerate(devices):
+            ser = serials[i]
+            controller = controllers[i]
+            try:
+                if ser.in_waiting > 0:
                     command = ser.readline().decode('utf-8').rstrip()
                     decode_command(int(command), cntrl=controller)
-                    tryneeded = False
-                except:
-                    print("ERROR: Could not read")
-            else:
-                command = ser.readline().decode('utf-8').rstrip()
-                decode_command(int(command), cntrl=controller)
+            except:
+                print("ERROR: Could not read")
         time.sleep(0.01)
