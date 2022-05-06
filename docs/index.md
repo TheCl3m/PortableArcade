@@ -1,8 +1,9 @@
-## Welcome to GitHub Pages
+## Portable Arcade Project
 
-You can use the [editor on GitHub](https://github.com/TheCl3m/PortableArcade/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+Welcome to the official page of the CS-358 Portable Arcade team project. This project was development during a semester at EPFL. All work is open-source and this page acts as a manual to let you build your own portable arcade !
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## General Description
+
 
 ### Markdown
 
