@@ -52,8 +52,14 @@
    */
   bool button1(float analogValue){
     analogValue = sensorRawToPhys(analogValue);
-    if(analogValue > 0 && analogValue < 3500 ) return true; //button 1
-    else false;
+    if((analogValue >= 0) && (analogValue <= 3500) ){
+
+      return true; //button 1
+    }
+    else{ 
+      return false;
+    }
+    
   }
   /**
    * @brief 
@@ -65,8 +71,8 @@
   */
   bool button2(float analogValue){
     analogValue = sensorRawToPhys(analogValue);
-    if(analogValue > 6500 && analogValue < 10000 ) return true; //button 1
-    else false;
+    if(analogValue >= 6500 && analogValue <= 10000 ) return true; //button 1
+    else return false;
   }
 
 
@@ -93,6 +99,7 @@
         int Sensor_valX_new  = analogRead(sensorPin);
         bool btn0_new = digitalRead(BTN_0) == HIGH;
         float ana_levier=analogRead(sensorLevier);
+        //Serial.println(ana_levier);
         bool btn1_new = button1(ana_levier);
         bool btn2_new = button2(ana_levier);
     
@@ -102,7 +109,7 @@
               btn0 = btn0_new;
               btn1 = btn1_new;
               btn2 = btn2_new;
-              sensorValX = sensorRawToPhys(Sensor_valX_new) * (1023/10000);
+              sensorValX = (Sensor_valX_new) ;
 
               btn = 0;
               if (btn0) {btn = btn + 1;}
@@ -119,7 +126,7 @@
 
               Serial.println(cmd);
       
-              delay(10);
+              delay(100);
           }
 
       
