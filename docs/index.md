@@ -43,16 +43,15 @@ The lever has also a potentiometer but instead of having some values in the axis
 
 The string of bits that we will send to our raspberry pi will be as:
 
-                                 XXXUUUUUUUUUUUXXXXXXXXXX
- The 3 MSB will be used to know if the buttons that we described before are HIGH. The 10 LSB are the encryption of the AXIS X of the potentiometer.
- The other bits are unused.
+                                 XXXUUUUUUUUUUUXXXXXXXXXX The 3 MSB will be used to know if the buttons that we described before are HIGH. The 10 LSB are the encryption of the AXIS X of the potentiometer. The other bits are unused.
 ## Raspberry Pi
 
 ### Retropie
 
 For this project, we used Retropie to run the emulators. Please follow this link to learn how to install Retropie on your Raspberry Pi. We recommend you using the Raspberry installation utiliy that can be found here in order to install it rapidly. Once you installed it, you will need to install some additional python libraires namely :
-1. Py-Serial
-2. Python-Uinput
+1. [Py-Serial](https://pyserial.readthedocs.io/en/latest/)
+2. [Python-Uinput](https://github.com/tuomasjjrasanen/python-uinput)
+3. [Py-Udev](https://pyudev.readthedocs.io/en/latest/) 
 
 
 
@@ -60,6 +59,7 @@ For this project, we used Retropie to run the emulators. Please follow this link
 
 Once this is done, you can download the ```main.py``` script from our repository. This script will enable the communication between the arduino boards and Retropie. This script supports plug and play as well as unplug ! 
 This section describes how the code works in case you are interested.
+The script uses the beforementioned libraries to work. To monitor the (un)plugging of devices, we use the ```Monitor``` of py-udev with a callback function ```device_change()``` . This function has two behaviors because of Linux. When you first plug-in a usb device, a ```USB-Device``` is added and the callback is called. But at this stage, the device is not yet working and it doesn't have a port assigned to it, which we need in order to communicate trough serial. In order to make it work, we use the ```pending_devices``` list which keeps track of the devices that are arduino boards and that we may either add to our devices list or remove. After some processing time, the callback is again called but with a ```USB-Interface```. At this point we need to check if the interface is one of our ```pending_devices``` and it is then we create all necessary objects. 
 
 ### Making it all work together
 
