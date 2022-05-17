@@ -60,10 +60,7 @@ def device_change(action, device):
         if device.get('ID_VENDOR_ID') == '1a86':
             pending_devices.append(device.sys_path)
     elif device.device_type == 'usb_interface':
-
         # if pending_device starts with device.sys_path
-        for pending_device in pending_devices:
-            if pending_device == device.sys_path[:len(pending_device)]:
                 idx = (devices.index(device) if device
                        in devices else -1)
                 if action == 'remove':
@@ -75,14 +72,16 @@ def device_change(action, device):
                         del(ctr)
                         del(ser)
                 elif action == 'add':
-                    controllers.append(create_controller())
-                    path = [os.path.join('/dev', f) for f in
-                            os.listdir(device.sys_path)
-                            if f.startswith('tty')]
-                    serials.append(serial.Serial(path[0], 9600,
-                                   timeout=1))
-                    devices.append(device)
-                    pending_devices.remove(pending_device)
+                     for pending_device in pending_devices:
+                        if pending_device == device.sys_path[:len(pending_device)]:
+                            controllers.append(create_controller())
+                            path = [os.path.join('/dev', f) for f in
+                                    os.listdir(device.sys_path)
+                                    if f.startswith('tty')]
+                            serials.append(serial.Serial(path[0], 9600,
+                                        timeout=1))
+                            devices.append(device)
+                            pending_devices.remove(pending_device)
 
 
 if __name__ == '__main__':

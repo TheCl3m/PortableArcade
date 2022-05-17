@@ -56,7 +56,7 @@ void setup(){
 
 
 bool needToUpdate(int old, int n){
-      return abs(old-n) > 20;
+      return abs(old-n) > 3;
 }
 
 void loop(){
