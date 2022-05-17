@@ -59,12 +59,44 @@ For this project, we used Retropie to run the emulators. Please follow this link
 
 Once this is done, you can download the ```main.py``` script from our repository. This script will enable the communication between the arduino boards and Retropie. This script supports plug and play as well as unplug ! 
 This section describes how the code works in case you are interested.
-The script uses the beforementioned libraries to work. To monitor the (un)plugging of devices, we use the ```Monitor``` of py-udev with a callback function ```device_change()``` . This function has two behaviors because of Linux. When you first plug-in a usb device, a ```USB-Device``` is added and the callback is called. But at this stage, the device is not yet working and it doesn't have a port assigned to it, which we need in order to communicate trough serial. In order to make it work, we use the ```pending_devices``` list which keeps track of the devices that are arduino boards and that we may either add to our devices list or remove. After some processing time, the callback is again called but with a ```USB-Interface```. At this point we need to check if the interface is one of our ```pending_devices``` and it is then we create all necessary objects. 
+The script uses the beforementioned libraries to work. To monitor the (un)plugging of devices, we use the ```Monitor``` of py-udev with a callback function ```device_change()``` . This function has two behaviors because of Linux. When you first plug-in a usb device, a ```USB-Device``` is added and the callback is called. But at this stage, the device is not yet working and it doesn't have a port assigned to it, which we need in order to communicate trough serial. In order to make it work, we use the ```pending_devices``` list which keeps track of the devices that are arduino boards and that we may either add to our devices list or remove. After some processing time, the callback is again called but with a ```USB-Interface```. At this point we need to check if the interface is one of our ```pending_devices``` and it is then we create all necessary objects.  Once the device is ready, we add it to the ```devices``` list and remove it from the ```pending_devices``` list. If the device is beeing unplugged, we remove it from the ```devices``` list.
+
+All the usb device processing is happening in a seperate thread, meanwhile in the main thread a loop is running that will check if there is any message from the arduino boards. If there is, it will be decoded and the appropriate function will be called.
+
+The decoding of the message is done by using the ```decode_command()``` function. This function takes the command vector and the controller as arguments. The command vector is a integer. The controller is a virtual input that will behave as indicated by the command vector.
+
+This whole script enables ***plug and play*** of the controllers and ***automatic input detection from RetroPie.*** 
+
+### Retropie
+
+We use [Retropie](https://retropie.org.uk) as our emulation software. This software is a collection of emulators for various systems. It is a free software that is open-source and can be used for any purpose. It is developed by the [RetroPie project](https://retropie.org.uk/).
+This software provides a great flexibility in terms of hardware and software. It is easy to install and use. It is also free.
+To install RetroPie on your Raspberry Pi, we suggest you the use the [RaspberryPi Imager](https://www.raspberrypi.com/software/). This software will install the OS and will also install the RetroPie software.
+
+To add games to your installation, please follow [this link](https://retropie.org.uk/docs/Transferring-Roms/).
+
 
 ### Making it all work together
 
-** TODO **
 
+# Part 2. Hardware
+
+
+## 3D-Printed parts 
+Most parts of the controllers are printed on a 3D printer. The following section describes how to make the parts of the controllers printable.
+Please find all [Fusion360](https://www.autodesk.com/products/fusion-360/overview) and [.STL](https://en.wikipedia.org/wiki/STL_(file_format)) files in the repository.
+
+Here is a non-exhaustive list of the parts that are available:
+* Steering wheel
+* Steering wheel lever
+* Steering wheel button
+* Joystick
+* Joystick button
+* Joystick box
+
+## Laser cutted parts
+
+**TODO**
 
 
 ### Markdown
