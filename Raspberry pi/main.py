@@ -1,11 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from tkinter import Button
 import serial
 from uinput import Device
 import uinput
 import time
 import pyudev
 import os
+import RPi.GPIO as GPIO
+
+#--------GLOBALS----------
+pending_devices = []
+devices = []
+controllers = []
+serials = []
+#----CONTROLLER CONFIG----
 
 events = (
     uinput.BTN_A,
@@ -13,19 +22,33 @@ events = (
     uinput.BTN_X,
     uinput.BTN_Y,
     uinput.BTN_JOYSTICK,
+    uinput.BTN_START,
+    uinput.BTN_SELECT,
+    uinput.BTN_COIN,
     uinput.ABS_X + (0, 1023, 0, 0),
     uinput.ABS_Y + (0, 1023, 0, 0),
     )
 
-pending_devices = []
-devices = []
-controllers = []
-serials = []
+#-----GPIO CALLBACKS-------
 
+def start_callback(channel):
+    if len(controllers) > 0:
+        controllers[0].emit(uinput.BTN_START, 1)
+
+def select_callback(channel):
+    if len(controllers) > 0:
+        controllers[0].emit(uinput.BTN_SELECT, 1)
+
+def coin_callback(channel):
+    if len(controllers) > 0:
+        controllers[0].emit(uinput.BTN_COIN, 1)
+
+#-----CREATE CONTROLLER-----
 
 def create_controller():
     return Device(events)
 
+#-----EXECUTE COMMAND-------
 
 def decode_command(vector, cntrl):
     cmd = vector
@@ -51,6 +74,7 @@ def decode_command(vector, cntrl):
 
     return vector
 
+#-----DEVICE CALLBACK--------
 
 def device_change(action, device):
 
@@ -84,14 +108,30 @@ def device_change(action, device):
                             pending_devices.remove(pending_device)
 
 
+#------MAIN--------------
+
 if __name__ == '__main__':
+
+    #----GPIO----
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #start Button
+    GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #select Button
+    GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #coin Button
+    GPIO.add_event_detect(23, GPIO.RISING, callback=start_callback)
+    GPIO.add_event_detect(24, GPIO.RISING, callback=select_callback)
+    GPIO.add_event_detect(25, GPIO.RISING, callback=coin_callback)
+
+    #-----DEVICES---
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
     monitor.filter_by('usb')
     observer = pyudev.MonitorObserver(monitor, device_change)
     observer.start()
 
+    #---SETUP ACK----
     print("Code started successfully")
+
+    #----LOOP--------
 
     while True:
         for (i, dev) in enumerate(devices):
@@ -104,3 +144,5 @@ if __name__ == '__main__':
             except:
                 time.sleep(0.1)
         time.sleep(0.01)
+
+    #-----END--------
