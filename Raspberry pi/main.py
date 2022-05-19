@@ -114,12 +114,12 @@ if __name__ == '__main__':
 
     #----GPIO----
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #start Button
-    GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #select Button
-    GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #coin Button
-    GPIO.add_event_detect(23, GPIO.RISING, callback=start_callback)
-    GPIO.add_event_detect(24, GPIO.RISING, callback=select_callback)
-    GPIO.add_event_detect(25, GPIO.RISING, callback=coin_callback)
+    GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP) #start Button
+    GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP) #select Button
+    GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP) #coin Button
+    GPIO.add_event_detect(23, GPIO.FALLING, callback=start_callback)
+    GPIO.add_event_detect(24, GPIO.FALLING, callback=select_callback)
+    GPIO.add_event_detect(25, GPIO.FALLING, callback=coin_callback)
 
     #-----DEVICES---
     context = pyudev.Context()
