@@ -95,8 +95,13 @@ Here is a non-exhaustive list of the parts that are available:
 * Joystick box
 
 ## Laser cutted parts
+Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the skectches done in fusion 360 who need to be export as dxf files.
 
-**TODO**
+* Steering wheel 
+* Main box
+
+the material used for this two components is MDF(wood) of 6mm and 8 mm. B
+
 
 
 ### Markdown
