@@ -57,7 +57,7 @@ This means that in our python script we will always expect data as written above
 ### Steering wheel
 
  Our steering wheel has two potentiometers and a button. Following our will of keeping the modularity present in our code we are going to follow  the same logic as the joystick controller. 
- The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick. 
+ The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick.
 
 The lever has also a potentiometer but instead of having some values in the axis-Y, which is not really helpful in car games we are going to model our level as two buttons. 
 If the lever is up: BTN A is HIGH,
@@ -67,7 +67,9 @@ The button inside the lever is coded as before.
 The string of bits that we will send to our raspberry pi will be as:
 
                                  B1B2B3UUUUUUUUUUUXXXXXXXXXX 
-B1 means Button1,B2 means Button2,B3 means Button3 and the 10-X are the binary encoded value of the X axis. 				 
+B1 means Button1,B2 means Button2,B3 means Button3 and the 10-X are the binary encoded value of the X axis. 
+DISCLAIMER:
+U means unused, we know that this is a waste of memory but our main goal is to conserve the modularity of our python script. Even though this is bad, it is not going to add any delay.			 
  				 
 ## Raspberry Pi
 
