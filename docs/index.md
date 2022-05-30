@@ -53,6 +53,7 @@ For this project, we used Retropie to run the emulators. Please follow this link
 2. [Python-Uinput](https://github.com/tuomasjjrasanen/python-uinput)
 3. [Py-Udev](https://pyudev.readthedocs.io/en/latest/) 
 
+![Retropie Installation](/PortableArcade/assets/rbpi_imager.gif)
 
 
 ### Main.py 
