@@ -31,15 +31,15 @@ In the repository, you will find all the sketches for the three input devices we
 
 Every single one of our inputs is going to send some information to our raspberry pi.  Knowing this, we had two challenges:
        
-       	-To send  data that our raspberry will process without knowledge of which input we are using 
-       	-Sending information that could be process quickly.
+1.To send  data that our raspberry will process without knowledge of which input we are using 
+2.Sending information that could be process quickly.
 
 As a result we did the following things.
 In order to not be disturb by any delay we decided to send binary strings (uint32_t). This decreased our complexity by a lot.
 Then we had to know what each bit will do. 
 In the case of our controller we had six different things:
-     		-	4 buttons
-        	-	2 values between 0-1023 representing the X-Y axis
+1. 4 buttons
+2. 2 values between 0-1023 representing the X-Y axis
 
 The buttons can be encode with 1 bit, in the other hand the X-Y axis need 10 bits.
 
