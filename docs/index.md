@@ -94,6 +94,11 @@ Here is a non-exhaustive list of the parts that are available:
 * Joystick button
 * Joystick box
 
+
+### Steering Wheel animation
+
+![Steering Wheel animation](/PortableArcade/assets/steering.gif)
+
 ## Laser cutted parts
 Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the skectches done in fusion 360 who need to be export as dxf files.
 
