@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from tkinter import Button
 import serial
 from uinput import Device
 import uinput
@@ -24,7 +23,7 @@ events = (
     uinput.BTN_JOYSTICK,
     uinput.BTN_START,
     uinput.BTN_SELECT,
-    uinput.BTN_COIN,
+    uinput.BTN_EXTRA,
     uinput.ABS_X + (0, 1023, 0, 0),
     uinput.ABS_Y + (0, 1023, 0, 0),
     )
@@ -33,15 +32,24 @@ events = (
 
 def start_callback(channel):
     if len(controllers) > 0:
-        controllers[0].emit(uinput.BTN_START, 1)
+        if (GPIO.input(23) == GPIO.LOW):
+            controllers[0].emit(uinput.BTN_START, 1)
+        else:
+            controllers[0].emit(uinput.BTN_START, 0)
 
 def select_callback(channel):
     if len(controllers) > 0:
-        controllers[0].emit(uinput.BTN_SELECT, 1)
+        if (GPIO.input(24) == GPIO.LOW):
+            controllers[0].emit(uinput.BTN_SELECT, 1)
+        else:
+            controllers[0].emit(uinput.BTN_SELECT, 0)
 
 def coin_callback(channel):
     if len(controllers) > 0:
-        controllers[0].emit(uinput.BTN_COIN, 1)
+        if (GPIO.input(25) == GPIO.LOW):
+            controllers[0].emit(uinput.BTN_EXTRA, 1)
+        else:
+            controllers[0].emit(uinput.BTN_EXTRA, 0)
 
 #-----CREATE CONTROLLER-----
 
@@ -92,8 +100,8 @@ def device_change(action, device):
                         dev = devices.pop(idx)
                         ctr = controllers.pop(idx)
                         ser = serials.pop(idx)
+                        ctr.destroy()
                         del(dev)
-                        del(ctr)
                         del(ser)
                 elif action == 'add':
                      for pending_device in pending_devices:
@@ -117,9 +125,9 @@ if __name__ == '__main__':
     GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP) #start Button
     GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP) #select Button
     GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP) #coin Button
-    GPIO.add_event_detect(23, GPIO.FALLING, callback=start_callback)
-    GPIO.add_event_detect(24, GPIO.FALLING, callback=select_callback)
-    GPIO.add_event_detect(25, GPIO.FALLING, callback=coin_callback)
+    GPIO.add_event_detect(23, GPIO.BOTH, callback=start_callback)
+    GPIO.add_event_detect(24, GPIO.BOTH, callback=select_callback)
+    GPIO.add_event_detect(25, GPIO.BOTH, callback=coin_callback)
 
     #-----DEVICES---
     context = pyudev.Context()
