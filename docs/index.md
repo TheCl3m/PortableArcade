@@ -4,7 +4,7 @@ Welcome to the official page of the CS-358 Portable Arcade team project. This pr
 
 # General Description
 
-This project provides with all necessary assets to recreate a portable arcade system. This system is built with modularity in mind, such that you will be able to create new input methods for your needs ! 
+This project provides with all necessary assets to recreate a portable arcade system. This system is built with modularity in mind, such that you will be able to create new input methods for your needs !  
 
 ## Requisites
 
