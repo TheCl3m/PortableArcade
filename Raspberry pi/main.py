@@ -20,10 +20,9 @@ events = (
     uinput.BTN_B,
     uinput.BTN_X,
     uinput.BTN_Y,
-    uinput.BTN_JOYSTICK,
-    uinput.BTN_START,
-    uinput.BTN_SELECT,
-    uinput.BTN_EXTRA,
+    uinput.BTN_JOYSTICK, #coin
+    uinput.BTN_START, #start
+    uinput.BTN_SELECT, #select
     uinput.ABS_X + (0, 1023, 0, 0),
     uinput.ABS_Y + (0, 1023, 0, 0),
     )
@@ -47,9 +46,9 @@ def select_callback(channel):
 def coin_callback(channel):
     if len(controllers) > 0:
         if (GPIO.input(25) == GPIO.LOW):
-            controllers[0].emit(uinput.BTN_EXTRA, 1)
+            controllers[0].emit(uinput.BTN_JOYSTICK, 1)
         else:
-            controllers[0].emit(uinput.BTN_EXTRA, 0)
+            controllers[0].emit(uinput.BTN_JOYSTICK, 0)
 
 #-----CREATE CONTROLLER-----
 
@@ -93,16 +92,16 @@ def device_change(action, device):
             pending_devices.append(device.sys_path)
     elif device.device_type == 'usb_interface':
         # if pending_device starts with device.sys_path
-                idx = (devices.index(device) if device
-                       in devices else -1)
                 if action == 'remove':
-                    if idx != -1:
-                        dev = devices.pop(idx)
-                        ctr = controllers.pop(idx)
-                        ser = serials.pop(idx)
-                        ctr.destroy()
-                        del(dev)
-                        del(ser)
+                    for idx, dev in enumerate(devices):
+                        if dev.sys_path == device.sys_path:
+                            dev = devices.pop(idx)
+                            ctr = controllers.pop(idx)
+                            ser = serials.pop(idx)
+                            ctr.destroy()
+                            del(ctr)
+                            del(dev)
+                            del(ser)                       
                 elif action == 'add':
                      for pending_device in pending_devices:
                         if pending_device == device.sys_path[:len(pending_device)]:

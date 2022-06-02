@@ -10,10 +10,10 @@
 #define vrY A1
 #define SW 2
 
-#define BTN_0 2
-#define BTN_1 3
-#define BTN_2 4
-#define BTN_3 5
+#define BTN_0 2 //A
+#define BTN_1 3 //B
+#define BTN_2 4 //X
+#define BTN_3 5 //Y
 
 
 int xPos = 0;
