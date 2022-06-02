@@ -45,7 +45,7 @@ The buttons can be encode with 1 bit; in the other hand the X-Y axis need 10 bit
 
 Our data sent to the raspberry will be as follows:
 
-	                     B4B3B2B1YYYYYYYYYYXXXXXXXXXX
+	  B4B3B2B1YYYYYYYYYYXXXXXXXXXX
 
 Knowing that our controller has the most inputs this will be our main structure.
 This means that in our python script we will always expect data as written above.
@@ -80,6 +80,8 @@ U means unused, we know that this is a waste of memory but our main goal is to c
 ![Wiring scheme of the steering wheel](/PortableArcade/assets/wheel_circuit.png)
 
 **It is worth noting that resistors might not be needed when using PULL_UP input mode of the Arduino**
+
+### Glove
 
 ### Wiring of the glove
 
