@@ -141,7 +141,15 @@ Here is a non-exhaustive list of the parts that are available:
 
 ![Steering Wheel animation](/PortableArcade/assets/steering.gif)
 
+### Steering Wheel Lever
+
+![Steering Wheel lever animation](/PortableArcade/assets/lever.gif)
+
 ### Joystick
+
+![Joystick](/PortableArcade/assets/joy.gif)
+
+### Joystick box
 
 ![Joystick and Buttons box](/PortableArcade/assets/joystick.gif)
 
@@ -153,6 +161,9 @@ Our main box and the box who will hold the steering wheel are being made with a 
 
 the material used for this two components is MDF(wood) of 6mm and 8 mm. B
 
+### Main box
+
+![Main box](/PortableArcade/assets/box.gif)
 
 
 ### Markdown
