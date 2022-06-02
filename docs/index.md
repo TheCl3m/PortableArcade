@@ -66,7 +66,7 @@ The button inside the lever is coded as before.
 
 The string of bits that we will send to our raspberry pi will be as:
 
-                                 B1B2B3UUUUUUUUUUUXXXXXXXXXX 
+        B1B2B3UUUUUUUUUUUXXXXXXXXXX 
 B1 means Button1,B2 means Button2,B3 means Button3 and the 10-X are the binary encoded value of the X axis. 
 DISCLAIMER:
 U means unused, we know that this is a waste of memory but our main goal is to conserve the modularity of our python script. Even though this is bad, it is not going to add any delay.		
@@ -81,7 +81,13 @@ U means unused, we know that this is a waste of memory but our main goal is to c
 
 **It is worth noting that resistors might not be needed when using PULL_UP input mode of the Arduino**
 
-### Glove
+## Glove
+
+Our glove works with an arduino nano 33 BLE (we use the gyroscope inside) and two flex meters. Following our will of keeping the modularity present we are 
+going to follow the same logic as the joystick controller. The gyroscope inside our glove will be encoded as the joystick but only in the axis X. The 
+gyroscope measures the angluar acceleration. When no acceleration is measured, we have a variable i = 0. When an acceleration to the right is measured, i 
++= 1, to the left i -= 1. In function of the value of i we send a value between 0-1023. 
+
 
 ### Wiring of the glove
 
@@ -154,6 +160,10 @@ Here is a non-exhaustive list of the parts that are available:
 ### Joystick box
 
 ![Joystick and Buttons box](/PortableArcade/assets/joystick.gif)
+
+### Glove 3D
+
+![Glove 3D](/PortableArcade/assets/gant3d.png)
 
 ## Laser cutted parts
 Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the skectches done in fusion 360 who need to be export as dxf files.
