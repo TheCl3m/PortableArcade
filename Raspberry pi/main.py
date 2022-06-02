@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from collections import OrderedDict
 import serial
 from uinput import Device
 import uinput
@@ -9,10 +10,10 @@ import os
 import RPi.GPIO as GPIO
 
 #--------GLOBALS----------
-pending_devices = []
-devices = []
-controllers = []
-serials = []
+pending_devices = set()
+devices = OrderedDict()
+controllers = {}
+serials = {}
 #----CONTROLLER CONFIG----
 
 events = (
@@ -31,24 +32,27 @@ events = (
 
 def start_callback(channel):
     if len(controllers) > 0:
+        dev = next(iter(devices))
         if (GPIO.input(23) == GPIO.LOW):
-            controllers[0].emit(uinput.BTN_START, 1)
+            controllers[dev].emit(uinput.BTN_START, 1)
         else:
-            controllers[0].emit(uinput.BTN_START, 0)
+            controllers[dev].emit(uinput.BTN_START, 0)
 
 def select_callback(channel):
     if len(controllers) > 0:
+        dev = next(iter(devices))
         if (GPIO.input(24) == GPIO.LOW):
-            controllers[0].emit(uinput.BTN_SELECT, 1)
+            controllers[dev].emit(uinput.BTN_SELECT, 1)
         else:
-            controllers[0].emit(uinput.BTN_SELECT, 0)
+            controllers[dev].emit(uinput.BTN_SELECT, 0)
 
 def coin_callback(channel):
     if len(controllers) > 0:
+        dev = next(iter(devices))
         if (GPIO.input(25) == GPIO.LOW):
-            controllers[0].emit(uinput.BTN_JOYSTICK, 1)
+            controllers[dev].emit(uinput.BTN_JOYSTICK, 1)
         else:
-            controllers[0].emit(uinput.BTN_JOYSTICK, 0)
+            controllers[dev].emit(uinput.BTN_JOYSTICK, 0)
 
 #-----CREATE CONTROLLER-----
 
@@ -89,29 +93,33 @@ def device_change(action, device):
 
     if device.device_type == 'usb_device':
         if device.get('ID_VENDOR_ID') == '1a86':
-            pending_devices.append(device.sys_path)
+            pending_devices.add(device.sys_path)
+    elif action == 'remove':
+        if device in devices:
+            dev = devices.pop(device)
+            ctr = controllers.pop(device)
+            ser = serials.pop(device)
+            ctr.destroy()
+            del(dev)
+            del(ctr)
+            del(ser)
+        if device in pending_devices:
+            pending_devices.remove(device)
     elif device.device_type == 'usb_interface':
-        # if pending_device starts with device.sys_path
-                if action == 'remove':
-                    for idx, dev in enumerate(devices):
-                        if dev.sys_path == device.sys_path:
-                            dev = devices.pop(idx)
-                            ctr = controllers.pop(idx)
-                            ser = serials.pop(idx)
-                            ctr.destroy()
-                            del(ctr)
-                            del(dev)
-                            del(ser)                       
-                elif action == 'add':
-                     for pending_device in pending_devices:
+                if action == 'add':
+                     for pending_device in pending_devices.copy():
                         if pending_device == device.sys_path[:len(pending_device)]:
-                            controllers.append(create_controller())
+                            ctr = controllers.pop(device, None)
+                            if ctr is not None:
+                                ctr.destroy()
+                                del(ctr)
+                            controllers[device] = create_controller()
                             path = [os.path.join('/dev', f) for f in
                                     os.listdir(device.sys_path)
                                     if f.startswith('tty')]
-                            serials.append(serial.Serial(path[0], 9600,
-                                        timeout=1))
-                            devices.append(device)
+                            serials[device] = serial.Serial(path[0], 9600,
+                                        timeout=1)
+                            devices[device] = None
                             pending_devices.remove(pending_device)
 
 
@@ -141,9 +149,9 @@ if __name__ == '__main__':
     #----LOOP--------
 
     while True:
-        for (i, dev) in enumerate(devices):
-            ser = serials[i]
-            controller = controllers[i]
+        for dev in devices.copy():
+            ser = serials[dev]
+            controller = controllers[dev]
             try:
                 if ser.in_waiting > 0:
                     command = ser.readline().decode('utf-8').rstrip()
