@@ -6,11 +6,11 @@ Welcome to the official page of the CS-358 Portable Arcade team project. This pr
 
 This project provides with all necessary assets to recreate a portable arcade system. This system is built with modularity in mind, such that you will be able to create new input methods according your needs !  
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/zHjaNmq0Gg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="800" height="450" src="https://www.youtube-nocookie.com/embed/zHjaNmq0Gg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 # Project Proposal 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/tFvmNuEm4DA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="800" height="450" src="https://www.youtube-nocookie.com/embed/tFvmNuEm4DA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Requisites
 
@@ -113,7 +113,7 @@ For this project, we used Retropie to run the emulators. Please follow this link
 
 ### Main.py 
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/9r-ca6F1JPs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="800" height="450" src="https://www.youtube-nocookie.com/embed/9r-ca6F1JPs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Once this is done, you can download the ```main.py``` script from our repository. This script will enable the communication between the arduino boards and Retropie. This script supports plug and play as well as unplug ! 
 This section describes how the code works in case you are interested.
