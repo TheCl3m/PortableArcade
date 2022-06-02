@@ -29,21 +29,48 @@ In the repository, you will find all the sketches for the three input devices we
 
 ### Binary encoding of the controller
 
-** TODO **
+Every single one of our inputs is going to send some information to our raspberry pi.  Knowing this, we had two challenges:
+       
+1.To send  data that our raspberry will process without knowledge of which input we are using 
+2.Sending information that could be process quickly.
+
+As a result we did the following things.
+In order to not be disturb by any delay we decided to send binary strings (uint32_t). This decreased our complexity by a lot.
+Then we had to know what each bit will do. 
+In the case of our controller we had six different things:
+1. 4 buttons
+2. 2 values between 0-1023 representing the X-Y axis
+
+The buttons can be encode with 1 bit, in the other hand the X-Y axis need 10 bits.
+
+Our data sent to the raspberry will be as follows:
+
+	                     B4B3B2B1YYYYYYYYYYXXXXXXXXXX
+
+Knowing that our controller has the most inputs this will be our main structure.
+This means that in our python script we will always expect data as written above.
+
+
 
 
 
 ### Steering wheel
 
  Our steering wheel has two potentiometers and a button. Following our will of keeping the modularity present in our code we are going to follow  the same logic as the joystick controller. 
- The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick. 
+ The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick.
 
-The lever has also a potentiometer but instead of having some values in the axis-Y, which is not really helpful in car games we are going to model our level as two buttons. If the lever is up- BTN A is HIGH, if the lever is down - BTN B is HIGH
- The button inside the lever is coded as before.
+The lever has also a potentiometer but instead of having some values in the axis-Y, which is not really helpful in car games we are going to model our level as two buttons. 
+If the lever is up: BTN A is HIGH,
+if the lever is down: BTN B is HIGH
+The button inside the lever is coded as before.
 
 The string of bits that we will send to our raspberry pi will be as:
 
-                                 XXXUUUUUUUUUUUXXXXXXXXXX The 3 MSB will be used to know if the buttons that we described before are HIGH. The 10 LSB are the encryption of the AXIS X of the potentiometer. The other bits are unused.
+                                 B1B2B3UUUUUUUUUUUXXXXXXXXXX 
+B1 means Button1,B2 means Button2,B3 means Button3 and the 10-X are the binary encoded value of the X axis. 
+DISCLAIMER:
+U means unused, we know that this is a waste of memory but our main goal is to conserve the modularity of our python script. Even though this is bad, it is not going to add any delay.			 
+ 				 
 ## Raspberry Pi
 
 ### Retropie
@@ -53,6 +80,7 @@ For this project, we used Retropie to run the emulators. Please follow this link
 2. [Python-Uinput](https://github.com/tuomasjjrasanen/python-uinput)
 3. [Py-Udev](https://pyudev.readthedocs.io/en/latest/) 
 
+![Retropie Installation](/PortableArcade/assets/rbpi_imager.gif)
 
 
 ### Main.py 
@@ -93,6 +121,15 @@ Here is a non-exhaustive list of the parts that are available:
 * Joystick
 * Joystick button
 * Joystick box
+
+
+### Steering Wheel
+
+![Steering Wheel animation](/PortableArcade/assets/steering.gif)
+
+### Joystick
+
+![Joystick and Buttons box](/PortableArcade/assets/joystick.gif)
 
 ## Laser cutted parts
 Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the skectches done in fusion 360 who need to be export as dxf files.
