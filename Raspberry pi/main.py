@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
 import serial
+from serial.tools.list_ports import comports
 from uinput import Device
 import uinput
 import time
@@ -10,7 +11,6 @@ import os
 import RPi.GPIO as GPIO
 
 #--------GLOBALS----------
-pending_devices = set()
 devices = OrderedDict()
 controllers = {}
 serials = {}
@@ -91,11 +91,7 @@ def device_change(action, device):
 
     # check if it is an arduino
 
-    if device.device_type == 'usb_device':
-        id = device.get('ID_VENDOR_ID')
-        if id == '1a86' or id == '2341':
-            pending_devices.add(device.sys_path)
-    elif action == 'remove':
+    if action == 'remove':
         if device in devices:
             dev = devices.pop(device)
             ctr = controllers.pop(device)
@@ -104,26 +100,21 @@ def device_change(action, device):
             del(dev)
             del(ctr)
             del(ser)
-        if device in pending_devices:
-            pending_devices.remove(device)
     elif device.device_type == 'usb_interface':
                 if action == 'add':
-                     for pending_device in pending_devices.copy():
-                        if pending_device == device.sys_path[:len(pending_device)]:
-                            ctr = controllers.pop(device, None)
-                            if ctr is not None:
-                                ctr.destroy()
-                                del(ctr)
-                            controllers[device] = create_controller()
-                            path = [os.path.join('/dev', f) for f in
-                                    os.listdir(device.sys_path)
-                                    if f.startswith('tty')]
-                            serials[device] = serial.Serial(path[0], 9600,
-                                        timeout=1)
-                            devices[device] = None
-                            pending_devices.remove(pending_device)
-
-
+                    ports = comports()
+                    for port in ports:
+                        if port.vid == 0x2341 or port.vid == 0x1a86:
+                            if device.sys_name.startswith(port.location):
+                                ctr = controllers.pop(device, None)
+                                if ctr is not None:
+                                    ctr.destroy()
+                                    del(ctr)
+                                controllers[device] = create_controller()
+                                serials[device] = serial.Serial(port.device, 9600,
+                                timeout=1)
+                                devices[device] = None
+                                return
 #------MAIN--------------
 
 if __name__ == '__main__':
