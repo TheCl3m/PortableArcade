@@ -126,7 +126,16 @@ To install RetroPie on your Raspberry Pi, we suggest you the use the [RaspberryP
 To add games to your installation, please follow [this link](https://retropie.org.uk/docs/Transferring-Roms/).
 
 
-### Making it all work together
+### Automatic start of the script 
+
+This section is a quick tutorial to enable the automatic startup of the ```main.py``` script. When booted in emulationstation, go the the emulation station settings -> Configuration/tools -> autostart
+
+![Autostart menu](/PortableArcade/assets/autostart.png)
+
+Choose menu E -> manually edit the autostart.sh.
+Before the ```emulationstation``` line add the following line :
+```sudo -E nice --1 sudo -E python home/pi/controller/main/py```
+This line starts the script with a high priority, so that it eliminates the potential input lag. You may want to change the priority depending on your hardware. 
 
 
 # Part 2. Hardware
