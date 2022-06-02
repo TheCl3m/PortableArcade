@@ -31,11 +31,11 @@ In the repository, you will find all the sketches for the three input devices we
 
 Every single one of our inputs is going to send some information to our raspberry pi.  Knowing this, we had two challenges:
        
-* To send  data that our raspberry will process without knowing  which input we are using 
-* Sending information that could be process quickly.
+* Sending  data that our raspberry will process without knowing  which input we are using 
+* Sending information that could be processed quickly.
 
 As a result we did the following things.
-In order to not be disturb by any delay we decided to send binary strings (uint32_t). This decreased our complexity by a lot.
+In order to not be disturbed by any delay we decided to send binary strings (uint32_t). This considerably reduced the complexity.
 Then we had to know what will each bit  do. 
 In the case of our controller we had six different things:
 * 4 buttons
@@ -83,10 +83,10 @@ U means unused, we know that this is a waste of memory but our main goal is to c
 
 ## Glove
 
-Our glove works with an arduino nano 33 BLE (we use the gyroscope inside) and two flex meters. Following our will of keeping the modularity present we are 
-going to follow the same logic as the joystick controller. The gyroscope inside our glove will be encoded as the joystick but only in the axis X. The 
-gyroscope measures the angluar acceleration. When no acceleration is measured, we have a variable i = 0. When an acceleration to the right is measured, i 
-+= 1, to the left i -= 1. In function of the value of i we send a value between 0-1023. 
+Our glove works with an [arduino nano 33 BLE](http://store.arduino.cc/products/arduino-nano-33-ble) (we use the gyroscope inside) and [two flex sensors](https://www.distrelec.ch/de/flexibler-weg-und-bewegungssensor-sparkfun-electronics-sen-10264/p/30145501?ext_cid=shgooaqchde-P-Smart-Shopping-Fallback&gclsrc=aw.ds&?pi=30145501&gclid=EAIaIQobChMI1sCF7dyP-AIVu49oCR2zkQdAEAQYASABEgJvCfD_BwE). Following our will of keeping the modularity present we are 
+going to follow the same logic as the joystick controller. The gyroscope inside our glove will be encoded as the joystick but only in the X-axis. The 
+gyroscope measures the angular acceleration. When no acceleration is measured, we have a variable i = 0. When an acceleration to the right is measured, i 
+is incremented by 1, to the left i is decremented by 1. Depending of the value of i we send a value between 0-1023. 
 
 
 ### Wiring of the glove
@@ -133,13 +133,13 @@ To add games to your installation, please follow [this link](https://retropie.or
 
 
 ## 3D-Printed parts 
-Most parts of the controllers are printed on a 3D printer. The following section describes how to make the parts of the controllers printable.
+Most parts of the controllers were printed on a Prusa MK3S 3D printer. The following section describes how to make the parts of the controllers printable.
 Please find all [Fusion360](https://www.autodesk.com/products/fusion-360/overview) and [.STL](https://en.wikipedia.org/wiki/STL_(file_format)) files in the repository.
 
 Here is a non-exhaustive list of the parts that are available:
 * Steering wheel
 * Steering wheel lever
-* Steering wheel button
+* Steering wheel lever button
 * Joystick
 * Joystick button
 * Joystick box
@@ -166,12 +166,12 @@ Here is a non-exhaustive list of the parts that are available:
 ![Glove 3D](/PortableArcade/assets/gant3d.png)
 
 ## Laser cutted parts
-Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the skectches done in fusion 360 who need to be export as dxf files.
+Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the sketches done in fusion 360 needing to be exported as dxf files.
 
-* Steering wheel 
+* Steering wheel Box 
 * Main box
 
-the material used for this two components is MDF(wood) of 6mm and 8 mm. B
+The material used for these two components is MDF(wood) of thickness 6mm and 8 mm. 
 
 ### Main box
 
