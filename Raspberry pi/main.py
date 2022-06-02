@@ -92,7 +92,8 @@ def device_change(action, device):
     # check if it is an arduino
 
     if device.device_type == 'usb_device':
-        if device.get('ID_VENDOR_ID') == '1a86':
+        id = device.get('ID_VENDOR_ID')
+        if id == '1a86' or id == '2341':
             pending_devices.add(device.sys_path)
     elif action == 'remove':
         if device in devices:
