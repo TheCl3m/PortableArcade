@@ -113,7 +113,7 @@ The script uses the beforementioned libraries to work. To monitor the (un)pluggi
 
 All the usb device processing is happening in a seperate thread, meanwhile in the main thread a loop is running that will check if there is any message from the arduino boards. If there is, it will be decoded and the appropriate function will be called.
 
-The decoding of the message is done by using the ```decode_command()``` function. This function takes the command vector and the controller as arguments. The command vector is a integer. The controller is a virtual input that will behave as indicated by the command vector.
+The decoding of the message is done by using the ```decode_command()``` function. This function takes the command vector and the controller as arguments. The command vector is an integer. The controller is a virtual input that will behave as indicated by the command vector.
 
 This whole script enables ***plug and play*** of the controllers and ***automatic input detection from RetroPie.*** 
 
@@ -134,9 +134,9 @@ To add games to your installation, please follow [this link](https://retropie.or
 
 ## 3D-Printed parts 
 Most parts of the controllers were printed on a Prusa MK3S 3D printer. The following section describes how to make the parts of the controllers printable.
-Please find all [Fusion360](https://www.autodesk.com/products/fusion-360/overview) and [.STL](https://en.wikipedia.org/wiki/STL_(file_format)) files in the repository.
+Please find all [Fusion360](https://www.autodesk.com/products/fusion-360/overview) and [.STL](https://en.wikipedia.org/wiki/STL_(file_format)) files in the repository. FOllowing the precision of the used 3D printer, the printed parts might need to get adjusted by using sandpaper and files.
 
-Here is a non-exhaustive list of the parts that are available:
+Here is a non-exhaustive list of the parts that are available in the repository:
 * Steering wheel
 * Steering wheel lever
 * Steering wheel lever button
@@ -166,7 +166,7 @@ Here is a non-exhaustive list of the parts that are available:
 ![Glove 3D](/PortableArcade/assets/gant3d.png)
 
 ## Laser cutted parts
-Our main box and the box who will hold the steering wheel are being made with a laser cutter. The following section will show all the sketches done in fusion 360 needing to be exported as dxf files.
+Our main box and the box holding the steering wheel are being made with a laser cutter. The following section will show all the sketches done in fusion 360 needing to be exported as dxf files.
 
 * Steering wheel Box 
 * Main box
