@@ -31,17 +31,17 @@ In the repository, you will find all the sketches for the three input devices we
 
 Every single one of our inputs is going to send some information to our raspberry pi.  Knowing this, we had two challenges:
        
-1.To send  data that our raspberry will process without knowledge of which input we are using 
-2.Sending information that could be process quickly.
+* To send  data that our raspberry will process without knowing  which input we are using 
+* Sending information that could be process quickly.
 
 As a result we did the following things.
 In order to not be disturb by any delay we decided to send binary strings (uint32_t). This decreased our complexity by a lot.
-Then we had to know what each bit will do. 
+Then we had to know what will each bit  do. 
 In the case of our controller we had six different things:
-1. 4 buttons
-2. 2 values between 0-1023 representing the X-Y axis
+* 4 buttons
+* 2 values between 0-1023 representing the X-Y axis
 
-The buttons can be encode with 1 bit, in the other hand the X-Y axis need 10 bits.
+The buttons can be encode with 1 bit; in the other hand the X-Y axis need 10 bits.
 
 Our data sent to the raspberry will be as follows:
 
@@ -56,8 +56,8 @@ This means that in our python script we will always expect data as written above
 
 ### Steering wheel
 
- Our steering wheel has two potentiometers and a button. Following our will of keeping the modularity present in our code we are going to follow  the same logic as the joystick controller. 
- The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick.
+ Our steering wheel has two potentiometers and a button. Following our will of keeping the modularity present we are going to follow  the same logic as the joystick controller. 
+ The potentiometer inside our wheel will be encoded as the joystick but only in the axis X. Following a mathematical conversion we are able to have the same values as the joystick(between 0-1023).
 
 The lever has also a potentiometer but instead of having some values in the axis-Y, which is not really helpful in car games we are going to model our level as two buttons. 
 If the lever is up: BTN A is HIGH,
