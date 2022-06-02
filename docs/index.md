@@ -79,6 +79,8 @@ U means unused, we know that this is a waste of memory but our main goal is to c
 
 ![Wiring scheme of the steering wheel](/PortableArcade/assets/wheel_circuit.png)
 
+**It is worth noting that resistors might not be needed when using PULL_UP input mode of the Arduino**
+
 ### Wiring of the glove
 
 ![Wiring scheme of the glove](/PortableArcade/assets/glove_circuit.png)
