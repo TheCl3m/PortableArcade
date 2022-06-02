@@ -74,10 +74,13 @@ The string of bits that we will send to our raspberry pi will be as:
 ```markdown
 
 
-`B1B2B3UUUUUUUUUUUXXXXXXXXXX 
-B1 means Button1, B2 means Button2, B3 means Button3 and the 10 X's are the binary encoded value of the X axis. 
+B1B2B3UUUUUUUUUUUXXXXXXXXXX 
+B1 means Button1, B2 means Button2, B3 means Button3 and the 10 X's 
+are the binary encoded value of the X axis. 
 DISCLAIMER:
-U means unused, we know that this is a waste of memory but our main goal is to conserve the modularity of our python script. Even though this is bad, it is not going to add any delay.`
+U means unused, we know that this is a waste of memory
+but our main goal is to conserve the modularity of our python script. 
+Even though this is bad, it is not going to add any delay.
 
 
 ```	
