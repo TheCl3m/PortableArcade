@@ -207,3 +207,5 @@ The material used for these two components is MDF(wood) of thickness 6mm and 8 m
 ![All](/PortableArcade/assets/full.gif)
 
 # Conclusion and thanks
+
+We would like to thanks the DLLEL and SKIL assistants for the help, our teaching assistant Federico Stella for the feedback throughout the project and Christoph Koch for making this course possible. Finally a special thanks to EPFL for providing the material and technichal infrastructure.
