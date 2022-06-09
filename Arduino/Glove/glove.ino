@@ -5,8 +5,6 @@
 int i = 0;
 int j = 0;
 float x, y, z;
-double moy_x, moy_y, moy_z = 0;
-int aux = 0;
 
 const int flexPin1 = A0;
 const int flexPin2 = A1;
@@ -19,61 +17,34 @@ bool btn0 = false;
 bool btn1 = false;
 bool btn2 = false;
 bool btn3 = false;
-int x_pos = 0;
-int x_neg = 0;
+int x_pos = 512;
+int y_pos = 512;
 
-
-int droite(int i);
-int gauche(int i);
-bool isButton1(int j);
-bool isButton2(int j);
-bool isFlexButton(int j);
-void readGyro();
 
 void setup() {
   Serial.begin(9600);
   while (!Serial);
-  //Serial.println("Started");
 
   if (!IMU.begin()) {
-    //Serial.println("Failed to initialize IMU!");
     while (1);
   }
-  /*
-  Serial.print("Gyroscope sample rate = ");
-  Serial.print(IMU.gyroscopeSampleRate());
-  Serial.println(" Hz");
-  Serial.println();
-  Serial.println("Gyroscope in degrees/second");
-  Serial.println("X\tY\tZ");*/
 }
 
 void loop() {
   
-
-  
-
   readGyro();
    
   val1 = analogRead(flexPin1);
   val2 = analogRead(flexPin2);
-
-  /*Serial.print("flex 1 = ");
-  Serial.print('\t');
-  Serial.print(val1);
-  Serial.print('\t');
-  Serial.print(", flex 2 = ");
-  Serial.print('\t');
-  Serial.println(val2);*/
   
-  bool btn0_new = isButton1(j);
-  bool btn1_new = isButton2(j);
+  bool btn0_new = false ;///isButton1(j) ;
+  bool btn1_new = false; //isButton2(j);
   bool btn2_new = isFlexButton(val1);
   bool btn3_new = isFlexButton(val2);
   int x_pos_new = getXValue(i);
+  int y_pos_new = getYValue(j);
 
-  if (btn0 != btn0_new || btn1 != btn1_new || btn2 != btn2_new  || btn3 != btn3_new || x_pos_new != 
-  x_pos){
+  if (btn0 != btn0_new || btn1 != btn1_new || btn2 != btn2_new  || btn3 != btn3_new || x_pos_new != x_pos || y_pos_new != y_pos){
     
   
     btn0 = btn0_new;
@@ -81,72 +52,69 @@ void loop() {
     btn2 = btn2_new;
     btn3 = btn3_new;
     x_pos = x_pos_new;
+    y_pos = y_pos_new;
+    
     btn = 0;
     if (btn2) {btn = btn + 1;}
     btn = btn << 1;
     if (btn3) { btn = btn + 1;}
+    btn = btn << 2;
+    /*if (btn0) { btn = btn + 1;}
     btn = btn << 1;
-    if (btn0) { btn = btn + 1;}
-    btn = btn << 1;
-    if(btn1){btn+=1;}
+    if(btn1){btn+=1;}*/
 
     uint32_t cmd = btn;
     cmd = cmd << 10;
-    cmd = cmd + 512;
+    cmd = cmd + y_pos;
     cmd = cmd << 10;
     cmd = cmd + x_pos;
     Serial.println(cmd);
   }
   
   
-  delay(100);
+  delay(50);
 }
 
 int getXValue(int a){
+  //going left
   if(a <= -1){
-    //Serial.println(a);
-    //Serial.println("gauche");
     i = -1;
     return 0;
-  }else if(a >= 1){
+  }
+  //Going right
+  else if(a >= 1){
     i = 1;
     return 1022;
   }
-  //Serial.println("normal");
-
-  //Serial.println(a);
+  //Not moving in th x axis
+  
   return 512;
 }
 
-bool isButton1(int a){
-  if(a >= 1){
-    //Serial.println(a);
-    j = 1;
-    //Serial.println("button 1");
-    return true;
-  }
-  return false;
-}
-
-bool isButton2(int a){
+int getYValue(int a){
+  //Going up
   if(a <= -1){
-    //Serial.println(a);
     j = -1;
-    //Serial.println("button 2");
-    return true;
+    return 1022;
   }
-  return false;
+  //Going down
+  else if(a >= 1){
+    j = 1;
+    return 0;
+  }
+  //Not moving in th y axis
+  return 512;
 }
 
+//is flex sensor flexing
 bool isFlexButton(int a){
   if(a < 250){
-    //Serial.println("Je te flex dessus");
-    //Serial.println(a);
     return true;
   }
   return false;
 }
 
+//reads gyroscope and sets the i and j value that gives the orientation
 void readGyro(){
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
