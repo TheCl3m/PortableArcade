@@ -97,6 +97,8 @@ Even though this is bad, it is not going to add any delay.
 
 ## Glove
 
+<iframe width="100%" height="450" src="https://www.youtube-nocookie.com/embed/ecN-cxE9aY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 Our glove works with an [arduino nano 33 BLE](http://store.arduino.cc/products/arduino-nano-33-ble) (we use the gyroscope inside) and [two flex sensors](https://www.distrelec.ch/de/flexibler-weg-und-bewegungssensor-sparkfun-electronics-sen-10264/p/30145501?ext_cid=shgooaqchde-P-Smart-Shopping-Fallback&gclsrc=aw.ds&?pi=30145501&gclid=EAIaIQobChMI1sCF7dyP-AIVu49oCR2zkQdAEAQYASABEgJvCfD_BwE). Following our will of keeping the modularity present we are 
 going to follow the same logic as the joystick controller. The gyroscope inside our glove will be encoded as the joystick but only in the X-axis. The 
 gyroscope measures the angular acceleration. When no acceleration is measured, we have a variable i = 0. When an acceleration to the right is measured, i 
